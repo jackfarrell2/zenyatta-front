@@ -1,6 +1,7 @@
 import { ReactFlow, Node, Edge, Background, Controls, useNodesState, useEdgesState, Connection, addEdge } from '@xyflow/react'
 import '@xyflow/react/dist/style.css';
 import { useCallback } from 'react';
+import PaymentInit from './PaymentInit';
 
 const initialNodes: Node[] = [
     {
@@ -35,6 +36,11 @@ const initialEdges: Edge[] = [
     }
 ]
 
+const nodeTypes = {
+    'paymentInit': PaymentInit
+}
+
+
 function Example() {
     const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes)
     const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges)
@@ -60,7 +66,7 @@ function Example() {
 
     return (
         <div style={{ width: '100vw', height: '100vh' }}>
-            <ReactFlow nodes={nodes} edges={edges} onNodesChange={onNodesChange} onEdgesChange={onEdgesChange} onConnect={onConnect} fitView>
+            <ReactFlow nodes={nodes} edges={edges} onNodesChange={onNodesChange} onEdgesChange={onEdgesChange} onConnect={onConnect} nodeTypes={nodeTypes} fitView>
                 <Background />
                 <Controls />
             </ReactFlow>
