@@ -1,11 +1,11 @@
 import React from 'react';
 import './App.css';
-import { Flow } from './components/Flow';
-import { TextUpdaterNode } from './components/TextUpdaterNode';
+// import { Flow } from './components/Flow';
+import { CustomFlow } from './components/CustomFlow';
 
 function App() {
   return (
-    <TextUpdaterNode />
+    <CustomFlow />
   );
 }
 
