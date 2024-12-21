@@ -1,12 +1,21 @@
 import React from 'react';
-import './App.css';
-// import { Flow } from './components/Flow';
-import { CustomFlow } from './components/CustomFlow';
+
+import Process from './components/Process';
+
+const testing: boolean = true;
 
 function App() {
-  return (
-    <CustomFlow />
-  );
+  if (testing) {
+    return (
+      <Process />
+    )
+  } else {
+    return (
+      <div>
+        Application
+      </div>
+    )
+  }
 }
 
 export default App;
