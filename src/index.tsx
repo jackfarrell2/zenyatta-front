@@ -3,6 +3,9 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { ReactFlowProvider } from '@xyflow/react';
+
+import '@xyflow/react/dist/style.css';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 const queryClient = new QueryClient();
@@ -12,6 +15,11 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
+    <ReactFlowProvider>
+      <div style={{ width: '100vw', height: '100vh' }}>
+        <App />
+      </div>
+    </ReactFlowProvider>
     <QueryClientProvider client={queryClient}>
       <App />
     </QueryClientProvider>
