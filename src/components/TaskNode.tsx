@@ -4,16 +4,14 @@ import TaskHeader from './taskcomponents/TaskHeader';
 import { Stack, Box } from '@mui/material'
 import { Handle, Position } from '@xyflow/react';
 
-const handleStyle = { left: 10 };
-
-interface TaskProps {
+interface TaskNodeProps {
     data: {
         label: string;
     };
     isConnectable: boolean;
 }
 
-const Task: React.FC<TaskProps> = ({ data, isConnectable }: TaskProps) => {
+const TaskNode: React.FC<TaskNodeProps> = ({ data, isConnectable }: TaskNodeProps) => {
     return (
         <Stack className='task-node' alignItems='stretch' spacing={0}>
             <Handle
@@ -31,11 +29,10 @@ const Task: React.FC<TaskProps> = ({ data, isConnectable }: TaskProps) => {
                 type='source'
                 position={Position.Bottom}
                 id='a'
-                style={handleStyle}
                 isConnectable={isConnectable}
             />
         </Stack>
     )
 }
 
-export default Task
+export default TaskNode

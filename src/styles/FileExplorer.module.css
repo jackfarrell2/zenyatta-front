@@ -1,0 +1,59 @@
+.fileExplorer {
+    width: 100%;
+    height: 100vh;
+    background: white;
+    border-right: 1px solid #e5e7eb;
+    overflow-y: auto;
+}
+
+.container {
+    padding: 8px;
+}
+
+.fileNode {
+    user-select: none;
+}
+
+.fileRow {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+.fileRow:hover {
+    background-color: #f3f4f6;
+}
+
+.folderName {
+    font-weight: 500;
+}
+
+.chevron {
+    display: flex;
+    align-items: center;
+    width: 16px;
+    height: 16px;
+}
+
+.folderIcon {
+    color: #3b82f6;
+    /* blue */
+}
+
+.fileIcon {
+    color: #6b7280;
+    /* gray */
+    margin-left: 16px;
+}
+
+.fileName {
+    font-size: 14px;
+}
+
+.childrenContainer {
+    margin-left: 16px;
+}

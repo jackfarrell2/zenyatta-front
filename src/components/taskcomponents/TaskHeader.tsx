@@ -11,9 +11,9 @@ import SavedSearchIcon from '@mui/icons-material/SavedSearch';
 
 const TaskHeader: React.FC = () => {
     return (
-        <Box>
+        <Box sx={{ height: '100%', width: '100%' }}>
             <AppBar position='static'>
-                <Toolbar sx={{ backgroundColor: 'lightgreen' }}>
+                <Toolbar sx={{ height: '100%', backgroundColor: 'lightgreen' }}>
                     <Grid sx={{ height: '100%', width: '100%' }} container justifyContent='flex-end' alignItems='space-between'>
                         <Grid size={4}>
                             <IconButton>

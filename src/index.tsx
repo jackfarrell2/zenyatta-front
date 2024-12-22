@@ -15,13 +15,10 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <ReactFlowProvider>
-      <div style={{ width: '100vw', height: '100vh' }}>
-        <App />
-      </div>
-    </ReactFlowProvider>
     <QueryClientProvider client={queryClient}>
-      <App />
+      <ReactFlowProvider>
+        <App />
+      </ReactFlowProvider>
     </QueryClientProvider>
   </React.StrictMode>
 );

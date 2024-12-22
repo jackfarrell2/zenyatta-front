@@ -1,54 +1,44 @@
 import React from 'react';
-import { ReactFlow, Controls, Background, applyEdgeChanges, applyNodeChanges, NodeChange, EdgeChange, Node, Edge, Connection, addEdge } from '@xyflow/react';
-import { useQuery } from '@tanstack/react-query';
-import config from '../config'
+import { ReactFlow, Controls, Background, applyEdgeChanges, applyNodeChanges, NodeChange, EdgeChange, Node, Edge, Connection, addEdge, useReactFlow } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
-import Task from './Task';
+import { APITask } from './ProcessDash';
+import TaskNode from './TaskNode';
+import { transformTasksToNodes, transformTasksToEdges } from '../utils/transformTasks';
+
 
 const rfStyle = {
     backgroundColor: '#B8CEFF',
 }
 
-const initialNodes: Node[] = [
-    {
-        id: 'node-1',
-        type: 'task',
-        position: { x: 0, y: 0 },
-        data: { value: 123 },
-    },
-    {
-        id: 'node-2',
-        type: 'task',
-        position: { x: 0, y: 200 },
-        data: { value: 123 },
-    }
-]
+interface ProcessProps {
+    tasks: APITask[],
+    focus: number
+}
 
-// const initialNodes: Node[] = [
-// ]
+const Process: React.FC<ProcessProps> = (props) => {
+    const initialNodes: Node[] = transformTasksToNodes(props.tasks)
+    const initialEdges: Edge[] = transformTasksToEdges(props.tasks)
+    const { setCenter } = useReactFlow();
 
-const initialEdges: Edge[] = [{ id: 'edge-1', source: 'node-1', target: 'node-2', sourceHandle: 'a' }];
-
-const apiUrl = `${config.apiUrl}`
-
-const CustomFlow: React.FC = () => {
     const [nodes, setNodes] = React.useState<Node[]>(initialNodes);
     const [edges, setEdges] = React.useState<Edge[]>(initialEdges);
-    const [tasksState, setTasksState] = React.useState(null)
-    const nodeTypes = React.useMemo(() => ({ task: Task }), []);
 
-    // Fetch tasks
-    const { data: tasks, isLoading: tasksLoading } = useQuery(['tasks'], async () => {
-        const response = await fetch(`${apiUrl}/processes`)
-        if (!response.ok) {
-            throw new Error('Failed to fetch tasks')
-        } else {
-            setTasksState(tasks['data']['title'])
+    React.useEffect(() => {
+        const targetNode = nodes[props.focus];
+        if (targetNode) {
+            setCenter(
+                targetNode.position.x + 380, // Subtract an offset to shift left
+                targetNode.position.y + 325,
+                {
+                    duration: 800,
+                    zoom: 1.2
+                }
+            );
         }
-        const data = await response.json()
-        return data
+    }, [props.focus, nodes, setCenter]);
 
-    })
+    const nodeTypes = React.useMemo(() => ({ task: TaskNode }), []);
+
 
     const onNodesChange = React.useCallback(
         (changes: NodeChange[]) => setNodes((nds) => applyNodeChanges(changes, nds)),
@@ -62,6 +52,7 @@ const CustomFlow: React.FC = () => {
         (params: Connection) => setEdges((eds) => addEdge(params, eds)),
         [],
     );
+
 
     return (
         <div style={{ height: '100vh', 'width': '100vw' }}>
@@ -82,4 +73,4 @@ const CustomFlow: React.FC = () => {
     );
 }
 
-export default CustomFlow
+export default Process

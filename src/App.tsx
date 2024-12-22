@@ -1,13 +1,20 @@
 import React from 'react';
+import './index.css';
 
-import Process from './components/Process';
+import ProcessDash from './components/ProcessDash';
+import { Box } from '@mui/material'
 
 const testing: boolean = true;
 
 function App() {
   if (testing) {
     return (
-      <Process />
+      <Box sx={{
+        height: '100vh',
+        width: '100vw',
+      }}>
+        <ProcessDash />
+      </Box>
     )
   } else {
     return (
