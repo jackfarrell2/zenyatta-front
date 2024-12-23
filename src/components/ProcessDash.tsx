@@ -10,14 +10,17 @@ import config from '../config'
 const apiUrl = `${config.apiUrl}`
 
 export interface APITask {
-    id: string,
-    label: string,
-    targets: string[]
+    id: string;
+    label: string;
+    targets: string[];
+    isLeaf: boolean;
+    subTasks: APITask[];
 }
 
 const ProcessDash: FC = () => {
     const [tasks, setTasks] = React.useState([])
     const [focus, setFocus] = React.useState(0)
+    const [reFocus, setRefocus] = React.useState(0)
     // Fetch tasks
     useQuery(
         ['tasks'],
@@ -36,15 +39,26 @@ const ProcessDash: FC = () => {
             },
         }
     );
+
+    const handleFocus = (nodeToFocusIndex: number) => {
+        if (nodeToFocusIndex === focus) {
+            setRefocus((prev) => prev + 1);
+        } else {
+            setFocus(nodeToFocusIndex)
+        }
+
+    }
+
+
     return (
         <Box sx={{ height: '100%', width: '100%' }}>
             {(tasks.length > 0) ? (
                 <Grid container justifyContent='stretch' alignItems='flex-start'>
                     <Grid size={2}>
-                        <FileExplorer tasks={tasks} />
+                        <FileExplorer tasks={tasks} handleFocus={handleFocus} />
                     </Grid>
                     <Grid size={10}>
-                        <Process tasks={tasks} focus={focus} />
+                        <Process tasks={tasks} focus={focus} reFocus={reFocus} />
                     </Grid>
                 </Grid>
             ) : (

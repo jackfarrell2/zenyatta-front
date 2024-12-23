@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { ChevronRight, ChevronDown, Folder, FileText, Check, Footprints, Dot } from 'lucide-react';
+import { ChevronRight, ChevronDown, Folder, File } from 'lucide-react';
 import styles from '../styles/FileExplorer.module.css'
 import { APITask } from './ProcessDash';
 
 interface FileNode {
+    id: number;
     name: string;
     type: 'file' | 'folder';
     children?: FileNode[];
@@ -15,14 +16,32 @@ interface FileNodeProps {
 }
 
 interface FileExplorerProps {
-    tasks: APITask[]
+    tasks: APITask[];
+    handleFocus: (nodeToFocusIndex: number) => void;
 }
 
-const FileExplorer: React.FC<FileExplorerProps> = (props) => {
-    const initialFiles: FileNode[] = props.tasks.map(task => ({
+function createFileNode(task: APITask, id: number): FileNode {
+    if (task.isLeaf) {
+        return {
+            id,
+            name: task.label,
+            type: 'file'
+        };
+    }
+
+    return {
+        id,
         name: task.label,
-        type: 'file'
-    }));
+        type: 'folder',
+        children: task.subTasks.map((subTask, index) =>
+            createFileNode(subTask, id * 100 + index)  // Using id*100 + index to ensure unique IDs
+        )
+    };
+}
+const FileExplorer: React.FC<FileExplorerProps> = (props) => {
+    const initialFiles: FileNode[] = props.tasks.map((task, index) =>
+        createFileNode(task, index)
+    );
 
     const [expandedFolders, setExpandedFolders] = useState<Set<string>>(new Set());
 
@@ -44,7 +63,22 @@ const FileExplorer: React.FC<FileExplorerProps> = (props) => {
             <div className={styles.fileNode}>
                 <div
                     className={`${styles.fileRow} ${node.type === 'folder' ? styles.folderName : ''}`}
-                    onClick={() => node.type === 'folder' && toggleFolder(currentPath)}
+                    onClick={() => {
+                        if (node.type === 'folder') {
+                            toggleFolder(currentPath);
+                            if (!path) {
+                                props.handleFocus(node.id);
+                            } else {
+                                console.log('clicked on subfolder')
+                            }
+                        } else {
+                            if (!path) {
+                                props.handleFocus(node.id);
+                            } else {
+                                console.log('clicked on subtask')
+                            }
+                        }
+                    }}
                 >
                     {node.type === 'folder' && (
                         <span className={styles.chevron}>
@@ -58,7 +92,7 @@ const FileExplorer: React.FC<FileExplorerProps> = (props) => {
                     {node.type === 'folder' ? (
                         <Folder className={styles.folderIcon} size={16} />
                     ) : (
-                        <Dot className={styles.fileIcon} size={16} />
+                        <File className={styles.fileIcon} size={16} />
                     )}
                     <span className={styles.fileName}>{node.name}</span>
                 </div>

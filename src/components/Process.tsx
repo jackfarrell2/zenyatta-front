@@ -12,7 +12,8 @@ const rfStyle = {
 
 interface ProcessProps {
     tasks: APITask[],
-    focus: number
+    focus: number,
+    reFocus: number,
 }
 
 const Process: React.FC<ProcessProps> = (props) => {
@@ -27,7 +28,7 @@ const Process: React.FC<ProcessProps> = (props) => {
         const targetNode = nodes[props.focus];
         if (targetNode) {
             setCenter(
-                targetNode.position.x + 380, // Subtract an offset to shift left
+                targetNode.position.x + 380,
                 targetNode.position.y + 325,
                 {
                     duration: 800,
@@ -35,10 +36,9 @@ const Process: React.FC<ProcessProps> = (props) => {
                 }
             );
         }
-    }, [props.focus, nodes, setCenter]);
+    }, [props.focus, props.reFocus, setCenter, nodes])
 
     const nodeTypes = React.useMemo(() => ({ task: TaskNode }), []);
-
 
     const onNodesChange = React.useCallback(
         (changes: NodeChange[]) => setNodes((nds) => applyNodeChanges(changes, nds)),
@@ -65,6 +65,7 @@ const Process: React.FC<ProcessProps> = (props) => {
                 nodeTypes={nodeTypes}
                 fitView
                 style={rfStyle}
+                nodesDraggable={false}
             >
                 <Background />
                 <Controls />
