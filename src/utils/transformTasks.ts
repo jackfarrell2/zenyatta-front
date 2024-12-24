@@ -8,8 +8,8 @@ const transformTasksToNodes = (tasks: APITask[]): Node[] => {
             x: 0,
             y: window.innerHeight * 0.42 * index,
         },
-        data: { label: task.label },
-        type: 'task'
+        data: { label: task.label, isLeaf: task.isLeaf, linkedProcessId: task.linkedProcessId },
+        type: 'task',
     }))
 };
 

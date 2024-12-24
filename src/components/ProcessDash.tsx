@@ -15,17 +15,19 @@ export interface APITask {
     targets: string[];
     isLeaf: boolean;
     subTasks: APITask[];
+    linkedProcessId: number | null
 }
 
 const ProcessDash: FC = () => {
     const [tasks, setTasks] = React.useState([])
+    const [title, setTitle] = React.useState('')
     const [focus, setFocus] = React.useState(0)
     const [reFocus, setRefocus] = React.useState(0)
     // Fetch tasks
     useQuery(
         ['tasks'],
         async () => {
-            const response = await fetch(`${apiUrl}/processes`);
+            const response = await fetch(`${apiUrl}/process/1`);
             if (!response.ok) {
                 throw new Error('Failed to fetch tasks');
             }
@@ -35,7 +37,8 @@ const ProcessDash: FC = () => {
         {
             onSuccess: (res) => {
                 const processTasks = res.data.tasks;
-                setTasks(processTasks)
+                setTasks(processTasks);
+                setTitle(res.data.title);
             },
         }
     );
@@ -55,7 +58,7 @@ const ProcessDash: FC = () => {
             {(tasks.length > 0) ? (
                 <Grid container justifyContent='stretch' alignItems='flex-start'>
                     <Grid size={2}>
-                        <FileExplorer tasks={tasks} handleFocus={handleFocus} />
+                        <FileExplorer title={title} tasks={tasks} handleFocus={handleFocus} />
                     </Grid>
                     <Grid size={10}>
                         <Process tasks={tasks} focus={focus} reFocus={reFocus} />

@@ -17,8 +17,8 @@ interface ProcessProps {
 }
 
 const Process: React.FC<ProcessProps> = (props) => {
-    const initialNodes: Node[] = transformTasksToNodes(props.tasks)
-    const initialEdges: Edge[] = transformTasksToEdges(props.tasks)
+    const initialNodes: Node[] = transformTasksToNodes(props.tasks);
+    const initialEdges: Edge[] = transformTasksToEdges(props.tasks);
     const { setCenter } = useReactFlow();
 
     const [nodes, setNodes] = React.useState<Node[]>(initialNodes);
@@ -66,6 +66,7 @@ const Process: React.FC<ProcessProps> = (props) => {
                 fitView
                 style={rfStyle}
                 nodesDraggable={false}
+                zoomOnDoubleClick={false}
             >
                 <Background />
                 <Controls />

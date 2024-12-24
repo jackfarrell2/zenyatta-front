@@ -17,6 +17,7 @@ interface FileNodeProps {
 
 interface FileExplorerProps {
     tasks: APITask[];
+    title: string;
     handleFocus: (nodeToFocusIndex: number) => void;
 }
 
@@ -38,12 +39,20 @@ function createFileNode(task: APITask, id: number): FileNode {
         )
     };
 }
+
 const FileExplorer: React.FC<FileExplorerProps> = (props) => {
     const initialFiles: FileNode[] = props.tasks.map((task, index) =>
         createFileNode(task, index)
     );
 
-    const [expandedFolders, setExpandedFolders] = useState<Set<string>>(new Set());
+    const rootNode: FileNode = {
+        id: -1,
+        name: props.title,
+        type: 'folder',
+        children: initialFiles
+    }
+
+    const [expandedFolders, setExpandedFolders] = useState<Set<string>>(new Set([`/${props.title}`]));
 
     const toggleFolder = (path: string): void => {
         const newExpanded = new Set(expandedFolders);
@@ -66,17 +75,11 @@ const FileExplorer: React.FC<FileExplorerProps> = (props) => {
                     onClick={() => {
                         if (node.type === 'folder') {
                             toggleFolder(currentPath);
-                            if (!path) {
+                            if (node.id >= 0) {
                                 props.handleFocus(node.id);
-                            } else {
-                                console.log('clicked on subfolder')
                             }
                         } else {
-                            if (!path) {
-                                props.handleFocus(node.id);
-                            } else {
-                                console.log('clicked on subtask')
-                            }
+                            props.handleFocus(node.id)
                         }
                     }}
                 >
@@ -115,12 +118,7 @@ const FileExplorer: React.FC<FileExplorerProps> = (props) => {
     return (
         <div className={styles.fileExplorer}>
             <div className={styles.container}>
-                {initialFiles.map((file, index) => (
-                    <FileNode
-                        key={`/${file.name}-${index}`}
-                        node={file}
-                    />
-                ))}
+                <FileNode node={rootNode} />
             </div>
         </div>
     );
