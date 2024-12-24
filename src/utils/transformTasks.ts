@@ -4,6 +4,7 @@ import { APITask } from '../components/ProcessDash';
 const transformTasksToNodes = (tasks: APITask[]): Node[] => {
     return tasks.map((task, index) => ({
         id: task.id,
+        stepNumber: task.stepNumber,
         position: {
             x: 0,
             y: window.innerHeight * 0.42 * index,

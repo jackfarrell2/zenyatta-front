@@ -4,50 +4,30 @@ import Grid from '@mui/material/Grid2'
 import { Box, CircularProgress } from '@mui/material'
 import Process from './Process';
 import FileExplorer from './FileExplorer';
-import { useQuery } from '@tanstack/react-query';
-import config from '../config'
-
-const apiUrl = `${config.apiUrl}`
 
 export interface APITask {
     id: string;
+    stepNumber: number;
     label: string;
     targets: string[];
     isLeaf: boolean;
     subTasks: APITask[];
-    linkedProcessId: number | null
+    linkedProcessId?: number;
+    parentProcessId: number;
 }
 
 const ProcessDash: FC = () => {
-    const [tasks, setTasks] = React.useState([])
-    const [title, setTitle] = React.useState('')
+    const [fileExplorerProcess, setFileExplorerProcess] = React.useState(1)
+    const [processViewProcess, setProcessViewProcess] = React.useState(1)
     const [focus, setFocus] = React.useState(0)
     const [reFocus, setRefocus] = React.useState(0)
-    // Fetch tasks
-    useQuery(
-        ['tasks'],
-        async () => {
-            const response = await fetch(`${apiUrl}/process/1`);
-            if (!response.ok) {
-                throw new Error('Failed to fetch tasks');
-            }
-            const res = await response.json();
-            return res;
-        },
-        {
-            onSuccess: (res) => {
-                const processTasks = res.data.tasks;
-                setTasks(processTasks);
-                setTitle(res.data.title);
-            },
-        }
-    );
 
-    const handleFocus = (nodeToFocusIndex: number) => {
-        if (nodeToFocusIndex === focus) {
+    const handleFocus = (nodeToFocusStep: number) => {
+        const indexToFocus = nodeToFocusStep - 1 // 0 index
+        if (nodeToFocusStep === focus) {
             setRefocus((prev) => prev + 1);
         } else {
-            setFocus(nodeToFocusIndex)
+            setFocus(indexToFocus)
         }
 
     }
@@ -55,20 +35,17 @@ const ProcessDash: FC = () => {
 
     return (
         <Box sx={{ height: '100%', width: '100%' }}>
-            {(tasks.length > 0) ? (
-                <Grid container justifyContent='stretch' alignItems='flex-start'>
-                    <Grid size={2}>
-                        <FileExplorer title={title} tasks={tasks} handleFocus={handleFocus} />
-                    </Grid>
-                    <Grid size={10}>
-                        <Process tasks={tasks} focus={focus} reFocus={reFocus} />
-                    </Grid>
+            <Grid container justifyContent='stretch' alignItems='flex-start'>
+                <Grid size={2}>
+                    <FileExplorer process={fileExplorerProcess} handleFocus={handleFocus} setProcessViewProcess={setProcessViewProcess} processViewProcess={processViewProcess} />
                 </Grid>
-            ) : (
-                <Grid container justifyContent='center' alignItems='center'>
-                    <CircularProgress />
+                <Grid size={10}>
+                    <Process process={processViewProcess} focus={focus} reFocus={reFocus} />
                 </Grid>
-            )}
+            </Grid>
+            <Grid container justifyContent='center' alignItems='center'>
+                <CircularProgress />
+            </Grid>
         </Box>
     )
 }

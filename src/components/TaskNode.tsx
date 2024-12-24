@@ -3,7 +3,6 @@ import TaskBody from './taskcomponents/TaskBody';
 import TaskHeader from './taskcomponents/TaskHeader';
 import { Stack, Box } from '@mui/material'
 import { Handle, Position } from '@xyflow/react';
-import { Component } from 'lucide-react';
 
 interface TaskNodeProps {
     data: {
@@ -21,6 +20,7 @@ const handleDoubleClick = (data: TaskNodeProps['data']) => {
         const linkedProcess = data.linkedProcessId
         // What do I want to do here?
         // 1. Make a call to the back end for THIS process (the linkedProcess)
+        // a. Abstract api call to utils (i.e. (const tasks = apiCall(task#)))
         // 2. When I get a response, make this process the process in Process.tsx but NOT in FileExplorer.tsx.
         // I will have to restructure the state.
     }

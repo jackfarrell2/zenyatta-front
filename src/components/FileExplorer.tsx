@@ -1,13 +1,19 @@
 import React, { useState } from 'react';
+import { Box, CircularProgress } from '@mui/material';
 import { ChevronRight, ChevronDown, Folder, File } from 'lucide-react';
 import styles from '../styles/FileExplorer.module.css'
 import { APITask } from './ProcessDash';
+import { useQuery } from '@tanstack/react-query';
+import config from '../config'
 
+const apiUrl = `${config.apiUrl}`
 interface FileNode {
-    id: number;
+    id: string;
+    stepNumber?: number;
     name: string;
     type: 'file' | 'folder';
     children?: FileNode[];
+    parentProcessId?: number
 }
 
 interface FileNodeProps {
@@ -16,43 +22,72 @@ interface FileNodeProps {
 }
 
 interface FileExplorerProps {
-    tasks: APITask[];
-    title: string;
+    process: number;
     handleFocus: (nodeToFocusIndex: number) => void;
+    setProcessViewProcess: (processId: number) => void;
+    processViewProcess: number;
 }
 
-function createFileNode(task: APITask, id: number): FileNode {
+function createFileNode(task: APITask): FileNode {
     if (task.isLeaf) {
         return {
-            id,
+            id: task.id,
+            stepNumber: task.stepNumber,
             name: task.label,
-            type: 'file'
+            type: 'file',
+            parentProcessId: task.parentProcessId,
         };
     }
 
     return {
-        id,
+        id: task.id,
+        stepNumber: task.stepNumber,
         name: task.label,
         type: 'folder',
         children: task.subTasks.map((subTask, index) =>
-            createFileNode(subTask, id * 100 + index)  // Using id*100 + index to ensure unique IDs
+            createFileNode(subTask)
         )
     };
 }
 
 const FileExplorer: React.FC<FileExplorerProps> = (props) => {
-    const initialFiles: FileNode[] = props.tasks.map((task, index) =>
-        createFileNode(task, index)
+    const [tasks, setTasks] = React.useState([])
+    const [title, setTitle] = React.useState('')
+    useQuery(
+        ['fileExplorerTasks'],
+        async () => {
+            const response = await fetch(`${apiUrl}/process/${props.process.toString()}`);
+            if (!response.ok) {
+                throw new Error('Failed to fetch tasks in the file explorer');
+            }
+            const res = await response.json();
+            return res;
+        },
+        {
+            onSuccess: (res) => {
+                setTasks(res.data.tasks);
+                setTitle(res.data.title)
+            },
+        }
     );
 
+    const initialFiles: FileNode[] = tasks.map((task, index) =>
+        createFileNode(task)
+    );
+    React.useEffect(() => {
+        if (title) {
+            setExpandedFolders(new Set([`/${title}`]));
+        }
+    }, [title]);
+
     const rootNode: FileNode = {
-        id: -1,
-        name: props.title,
+        id: 'root-node',
+        name: title,
         type: 'folder',
         children: initialFiles
     }
 
-    const [expandedFolders, setExpandedFolders] = useState<Set<string>>(new Set([`/${props.title}`]));
+    const [expandedFolders, setExpandedFolders] = useState<Set<string>>(new Set([`/${title}`]));
 
     const toggleFolder = (path: string): void => {
         const newExpanded = new Set(expandedFolders);
@@ -75,11 +110,38 @@ const FileExplorer: React.FC<FileExplorerProps> = (props) => {
                     onClick={() => {
                         if (node.type === 'folder') {
                             toggleFolder(currentPath);
-                            if (node.id >= 0) {
-                                props.handleFocus(node.id);
+                            if (node.stepNumber) {
+                                props.handleFocus(node.stepNumber);
                             }
                         } else {
-                            props.handleFocus(node.id)
+                            if (path === `/${title}`) {
+                                if (props.processViewProcess !== node.parentProcessId) {
+                                    if (node.parentProcessId) {
+                                        props.setProcessViewProcess(node.parentProcessId)
+                                    }
+                                } else {
+                                    props.handleFocus(node.stepNumber ?? 1)
+                                }
+                                // start by clicking on rootfolders, then subfolders,
+                                // then click on root files, then sub files
+                                // then hover away and click on files
+
+                                // if the view needs to change, figure out how to change the view AND focus on the node we need to focus on
+
+                                // top file
+                                // if this is a top file, check
+                                // 1. do we need to rerout the process view to the root view?
+                                // if so, change the process view to root view
+                                // then, focus in on this file
+                                // 2. we do not need to rerout the process view (the process view == the root view)
+                                // just focus on this file
+                                props.handleFocus(node.stepNumber ?? 1)
+                            } else {
+                                // sub file
+                                if (node.parentProcessId) {
+                                    props.setProcessViewProcess(node.parentProcessId)
+                                }
+                            }
                         }
                     }}
                 >
@@ -116,12 +178,19 @@ const FileExplorer: React.FC<FileExplorerProps> = (props) => {
     };
 
     return (
-        <div className={styles.fileExplorer}>
-            <div className={styles.container}>
-                <FileNode node={rootNode} />
-            </div>
-        </div>
+        <Box sx={{ height: '100%', width: '100%' }}>
+            {tasks.length > 0 ? (
+                <div className={styles.fileExplorer}>
+                    <div className={styles.container}>
+                        <FileNode node={rootNode} />
+                    </div>
+                </div>
+            ) : (
+                <Box>
+                    <CircularProgress />
+                </Box>
+            )}
+        </Box>
     );
-};
-
+}
 export default FileExplorer;
