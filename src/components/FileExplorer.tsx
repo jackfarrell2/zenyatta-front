@@ -183,7 +183,7 @@ const FileExplorer: React.FC<FileExplorerProps> = (props) => {
                 </div>
             ) : (
                 <Box>
-                    <CircularProgress />
+                    <CircularProgress color='success' />
                 </Box>
             )}
         </Box>

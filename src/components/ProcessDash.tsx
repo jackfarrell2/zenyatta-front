@@ -1,7 +1,7 @@
 import React from 'react';
 import { FC } from 'react';
 import Grid from '@mui/material/Grid2'
-import { Box, CircularProgress } from '@mui/material'
+import { Box } from '@mui/material'
 import Process from './Process';
 import FileExplorer from './FileExplorer';
 
@@ -45,16 +45,13 @@ const ProcessDash: FC = () => {
     return (
         <FocusContext.Provider value={{ focus, setFocus }}>
             <Box sx={{ height: '100%', width: '100%' }}>
-                <Grid container justifyContent='stretch' alignItems='flex-start'>
+                <Grid container justifyContent='stretch' alignItems='center'>
                     <Grid size={2}>
                         <FileExplorer process={fileExplorerProcess} />
                     </Grid>
                     <Grid size={10}>
                         <Process />
                     </Grid>
-                </Grid>
-                <Grid container justifyContent='center' alignItems='center'>
-                    <CircularProgress />
                 </Grid>
             </Box>
         </FocusContext.Provider>

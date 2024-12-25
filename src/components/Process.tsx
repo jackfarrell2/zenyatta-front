@@ -34,7 +34,8 @@ const Process: React.FC = (props) => {
                 setNodes(transformTasksToNodes(res.data.tasks))
                 setEdges(transformTasksToEdges(res.data.tasks))
             },
-        }
+            refetchOnWindowFocus: false,
+        },
     );
 
     const { setCenter } = useReactFlow();
@@ -42,9 +43,10 @@ const Process: React.FC = (props) => {
     React.useEffect(() => {
         const targetNode = nodes[focus.step];
         if (targetNode) {
+            console.log('targetNode', targetNode)
             setCenter(
-                targetNode.position.x + 380,
-                targetNode.position.y + 325,
+                targetNode.position.x + (targetNode.measured?.width ?? 0) / 2,
+                targetNode.position.y + (targetNode.measured?.height ?? 0) / 2 + 115,
                 {
                     duration: 800,
                     zoom: 1.2
@@ -70,13 +72,13 @@ const Process: React.FC = (props) => {
 
 
     return (
-        <Box sx={{ height: '100%', width: '100%' }}>
+        <Box sx={{ height: '100vh', width: '85vw', p: 0, m: 0 }}>
             {(tasksLoading || nodes.length === 0) ? (
                 <Box>
                     <CircularProgress />
                 </Box>
             ) : (
-                <div style={{ height: '100vh', 'width': '100vw' }}>
+                <div style={{ height: '100%', 'width': '100%' }}>
                     <ReactFlow
                         nodes={nodes}
                         edges={edges}
