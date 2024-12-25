@@ -9,11 +9,11 @@ import config from '../config'
 const apiUrl = `${config.apiUrl}`
 interface FileNode {
     id: string;
-    stepNumber?: number;
+    stepNumber: number;
     name: string;
     type: 'file' | 'folder';
     children?: FileNode[];
-    parentProcessId?: number
+    parentProcessId: number
 }
 
 interface FileNodeProps {
@@ -46,7 +46,8 @@ function createFileNode(task: APITask): FileNode {
         type: 'folder',
         children: task.subTasks.map((subTask, index) =>
             createFileNode(subTask)
-        )
+        ),
+        parentProcessId: task.parentProcessId
     };
 }
 
@@ -84,7 +85,9 @@ const FileExplorer: React.FC<FileExplorerProps> = (props) => {
         id: 'root-node',
         name: title,
         type: 'folder',
-        children: initialFiles
+        children: initialFiles,
+        parentProcessId: -1,
+        stepNumber: -1
     }
 
     const [expandedFolders, setExpandedFolders] = useState<Set<string>>(new Set([`/${title}`]));
@@ -108,39 +111,29 @@ const FileExplorer: React.FC<FileExplorerProps> = (props) => {
                 <div
                     className={`${styles.fileRow} ${node.type === 'folder' ? styles.folderName : ''}`}
                     onClick={() => {
-                        if (node.type === 'folder') {
-                            toggleFolder(currentPath);
-                            if (node.stepNumber) {
+                        if (node.type === 'folder' && node.id !== 'root-node') {
+                            // Folders
+                            if (props.processViewProcess === node.parentProcessId) {
+                                // Same process view folder
+                                props.handleFocus(node.stepNumber);
+                            } else {
+                                // Different process view folder
+                                props.setProcessViewProcess(node.parentProcessId);
                                 props.handleFocus(node.stepNumber);
                             }
+                            toggleFolder(currentPath);
+                        } else if (node.id === 'root-node') {
+                            // Root folder
+                            toggleFolder(currentPath);
                         } else {
-                            if (path === `/${title}`) {
-                                if (props.processViewProcess !== node.parentProcessId) {
-                                    if (node.parentProcessId) {
-                                        props.setProcessViewProcess(node.parentProcessId)
-                                    }
-                                } else {
-                                    props.handleFocus(node.stepNumber ?? 1)
-                                }
-                                // start by clicking on rootfolders, then subfolders,
-                                // then click on root files, then sub files
-                                // then hover away and click on files
-
-                                // if the view needs to change, figure out how to change the view AND focus on the node we need to focus on
-
-                                // top file
-                                // if this is a top file, check
-                                // 1. do we need to rerout the process view to the root view?
-                                // if so, change the process view to root view
-                                // then, focus in on this file
-                                // 2. we do not need to rerout the process view (the process view == the root view)
-                                // just focus on this file
-                                props.handleFocus(node.stepNumber ?? 1)
+                            // Files
+                            if (props.processViewProcess === node.parentProcessId) {
+                                // Same process view file
+                                props.handleFocus(node.stepNumber);
                             } else {
-                                // sub file
-                                if (node.parentProcessId) {
-                                    props.setProcessViewProcess(node.parentProcessId)
-                                }
+                                // Different process view file
+                                props.setProcessViewProcess(node.parentProcessId);
+                                props.handleFocus(node.stepNumber)
                             }
                         }
                     }}
