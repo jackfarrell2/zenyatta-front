@@ -21,24 +21,43 @@ export interface FocusState {
     step: number;
 }
 
+const defaultFocusState: FocusState = {
+    process: 0,
+    step: 1
+}
+
+export interface FocusContextType {
+    focus: FocusState;
+    setFocus: React.Dispatch<React.SetStateAction<FocusState>>;
+}
+
+const defaultFocusContext: FocusContextType = {
+    focus: defaultFocusState,
+    setFocus: () => { },
+}
+
+export const FocusContext = React.createContext<FocusContextType>(defaultFocusContext)
+
 const ProcessDash: FC = () => {
-    const [fileExplorerProcess, setFileExplorerProcess] = React.useState(1)
+    const fileExplorerProcess = 1
     const [focus, setFocus] = React.useState<FocusState>({ process: 1, step: 0 })
 
     return (
-        <Box sx={{ height: '100%', width: '100%' }}>
-            <Grid container justifyContent='stretch' alignItems='flex-start'>
-                <Grid size={2}>
-                    <FileExplorer process={fileExplorerProcess} focus={focus} setFocus={setFocus} />
+        <FocusContext.Provider value={{ focus, setFocus }}>
+            <Box sx={{ height: '100%', width: '100%' }}>
+                <Grid container justifyContent='stretch' alignItems='flex-start'>
+                    <Grid size={2}>
+                        <FileExplorer process={fileExplorerProcess} />
+                    </Grid>
+                    <Grid size={10}>
+                        <Process />
+                    </Grid>
                 </Grid>
-                <Grid size={10}>
-                    <Process focus={focus} />
+                <Grid container justifyContent='center' alignItems='center'>
+                    <CircularProgress />
                 </Grid>
-            </Grid>
-            <Grid container justifyContent='center' alignItems='center'>
-                <CircularProgress />
-            </Grid>
-        </Box>
+            </Box>
+        </FocusContext.Provider>
     )
 }
 

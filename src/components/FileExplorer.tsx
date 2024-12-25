@@ -5,7 +5,7 @@ import styles from '../styles/FileExplorer.module.css'
 import { APITask } from './ProcessDash';
 import { useQuery } from '@tanstack/react-query';
 import config from '../config'
-import { FocusState } from './ProcessDash';
+import { FocusContext, FocusContextType } from './ProcessDash';
 
 const apiUrl = `${config.apiUrl}`
 interface FileNode {
@@ -24,9 +24,6 @@ interface FileNodeProps {
 
 interface FileExplorerProps {
     process: number;
-    // handleFocus: (nodeToFocusIndex: number) => void;
-    focus: FocusState;
-    setFocus: (focus: FocusState) => void;
 }
 
 function createFileNode(task: APITask): FileNode {
@@ -55,6 +52,7 @@ function createFileNode(task: APITask): FileNode {
 const FileExplorer: React.FC<FileExplorerProps> = (props) => {
     const [tasks, setTasks] = React.useState([])
     const [title, setTitle] = React.useState('')
+    const { focus, setFocus } = React.useContext<FocusContextType>(FocusContext)
     useQuery(
         ['fileExplorerTasks'],
         async () => {
@@ -114,15 +112,15 @@ const FileExplorer: React.FC<FileExplorerProps> = (props) => {
                     onClick={() => {
                         if (node.type === 'folder' && node.id !== 'root-node') {
                             // Folders
-                            if (props.focus.process === node.parentProcessId) {
+                            if (focus.process === node.parentProcessId) {
                                 // Same process view folder
-                                props.setFocus({
-                                    ...props.focus,
+                                setFocus({
+                                    ...focus,
                                     step: node.stepNumber - 1
                                 })
                             } else {
                                 // Different process view folder
-                                props.setFocus({ process: node.parentProcessId, step: node.stepNumber - 1 })
+                                setFocus({ process: node.parentProcessId, step: node.stepNumber - 1 })
                             }
                             toggleFolder(currentPath);
                         } else if (node.id === 'root-node') {
@@ -130,15 +128,15 @@ const FileExplorer: React.FC<FileExplorerProps> = (props) => {
                             toggleFolder(currentPath);
                         } else {
                             // Files
-                            if (props.focus.process === node.parentProcessId) {
+                            if (focus.process === node.parentProcessId) {
                                 // Same process view file
-                                props.setFocus({
-                                    ...props.focus,
+                                setFocus({
+                                    ...focus,
                                     step: node.stepNumber - 1
                                 })
                             } else {
                                 // Different process view file
-                                props.setFocus({ process: node.parentProcessId, step: node.stepNumber - 1 })
+                                setFocus({ process: node.parentProcessId, step: node.stepNumber - 1 })
                             }
                         }
                     }}
