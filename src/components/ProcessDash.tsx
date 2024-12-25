@@ -39,8 +39,9 @@ const defaultFocusContext: FocusContextType = {
 export const FocusContext = React.createContext<FocusContextType>(defaultFocusContext)
 
 const ProcessDash: FC = () => {
-    const fileExplorerProcess = 1
-    const [focus, setFocus] = React.useState<FocusState>({ process: 1, step: 0 })
+    const initialProcess = 1 // Hard coded first process for now
+    const fileExplorerProcess = initialProcess
+    const [focus, setFocus] = React.useState<FocusState>({ process: initialProcess, step: 0 })
 
     return (
         <FocusContext.Provider value={{ focus, setFocus }}>
@@ -50,7 +51,7 @@ const ProcessDash: FC = () => {
                         <FileExplorer process={fileExplorerProcess} />
                     </Grid>
                     <Grid size={10}>
-                        <Process />
+                        <Process initialProcess={initialProcess} />
                     </Grid>
                 </Grid>
             </Box>

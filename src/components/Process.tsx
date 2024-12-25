@@ -1,12 +1,13 @@
 import React from 'react';
-import { ReactFlow, Controls, Background, applyEdgeChanges, applyNodeChanges, NodeChange, EdgeChange, Node, Edge, Connection, addEdge, useReactFlow } from '@xyflow/react';
+import { ReactFlow, Controls, Background, applyEdgeChanges, applyNodeChanges, NodeChange, EdgeChange, Node, Edge, Connection, addEdge, useReactFlow, Panel } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
-import { Box, CircularProgress } from '@mui/material';
+import { Box, CircularProgress, IconButton } from '@mui/material';
 import TaskNode from './TaskNode';
 import { transformTasksToNodes, transformTasksToEdges } from '../utils/transformTasks';
 import { useQuery } from '@tanstack/react-query';
 import config from '../config'
 import { FocusContext, FocusContextType } from './ProcessDash';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const apiUrl = `${config.apiUrl}`
 
@@ -14,10 +15,14 @@ const rfStyle = {
     backgroundColor: '#B8CEFF',
 }
 
-const Process: React.FC = (props) => {
+interface ProcessProps {
+    initialProcess: number;
+}
+
+const Process: React.FC<ProcessProps> = (props) => {
     const [nodes, setNodes] = React.useState<Node[]>([]);
     const [edges, setEdges] = React.useState<Edge[]>([]);
-    const { focus } = React.useContext<FocusContextType>(FocusContext)
+    const { focus, setFocus } = React.useContext<FocusContextType>(FocusContext)
 
     const { isLoading: tasksLoading } = useQuery(
         ['processViewTasks', focus.process],
@@ -43,7 +48,6 @@ const Process: React.FC = (props) => {
     React.useEffect(() => {
         const targetNode = nodes[focus.step];
         if (targetNode) {
-            console.log('targetNode', targetNode)
             setCenter(
                 targetNode.position.x + (targetNode.measured?.width ?? 0) / 2,
                 targetNode.position.y + (targetNode.measured?.height ?? 0) / 2 + 115,
@@ -70,6 +74,14 @@ const Process: React.FC = (props) => {
         [],
     );
 
+    const handleBackClick = () => {
+        setFocus(prevFocus => ({
+            ...prevFocus,
+            process: prevFocus.process - 1,
+            step: 0
+        }));
+    };
+
 
     return (
         <Box sx={{ height: '100vh', width: '85vw', p: 0, m: 0 }}>
@@ -91,6 +103,11 @@ const Process: React.FC = (props) => {
                         nodesDraggable={false}
                         zoomOnDoubleClick={false}
                     >
+                        <Panel position='top-left'>
+                            <IconButton size='large' disabled={(props.initialProcess === focus.process) ? true : false} onClick={handleBackClick}>
+                                <ArrowBackIcon />
+                            </IconButton>
+                        </Panel>
                         <Background />
                         <Controls />
                     </ReactFlow>
