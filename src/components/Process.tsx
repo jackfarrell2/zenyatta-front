@@ -16,7 +16,6 @@ const rfStyle = {
 
 interface ProcessProps {
     focus: FocusState,
-    // reFocus: number,
 }
 
 const Process: React.FC<ProcessProps> = (props) => {
@@ -55,7 +54,6 @@ const Process: React.FC<ProcessProps> = (props) => {
                 }
             );
         }
-        // }, [props.focus, props.reFocus, setCenter, nodes])
     }, [props.focus, setCenter, nodes])
 
     const nodeTypes = React.useMemo(() => ({ task: TaskNode }), []);

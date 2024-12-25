@@ -15,20 +15,20 @@ const transformTasksToNodes = (tasks: APITask[]): Node[] => {
 };
 
 const transformTasksToEdges = (tasks: APITask[]): Edge[] => {
-    const res = []
+    const edges = []
     for (let i = 0; i < tasks.length; i++) {
         if (tasks[i].targets.length > 0) {
             for (let j = 0; j < tasks[i].targets.length; j++) {
-                const thisTask = {
+                const thisEdge = {
                     id: `edge-${tasks[i].id}-${tasks[i].targets[j]}`,
                     source: tasks[i].id,
                     target: tasks[i].targets[j],
                 }
-                res.push(thisTask)
+                edges.push(thisEdge)
             }
         }
     }
-    return res
+    return edges
 }
 
 export { transformTasksToNodes, transformTasksToEdges }
