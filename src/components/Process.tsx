@@ -6,6 +6,7 @@ import TaskNode from './TaskNode';
 import { transformTasksToNodes, transformTasksToEdges } from '../utils/transformTasks';
 import { useQuery } from '@tanstack/react-query';
 import config from '../config'
+import { FocusState } from './ProcessDash';
 
 const apiUrl = `${config.apiUrl}`
 
@@ -14,9 +15,8 @@ const rfStyle = {
 }
 
 interface ProcessProps {
-    process: number,
-    focus: number,
-    reFocus: number,
+    focus: FocusState,
+    // reFocus: number,
 }
 
 const Process: React.FC<ProcessProps> = (props) => {
@@ -24,9 +24,9 @@ const Process: React.FC<ProcessProps> = (props) => {
     const [edges, setEdges] = React.useState<Edge[]>([]);
 
     const { isLoading: tasksLoading } = useQuery(
-        ['processViewTasks', props.process],
+        ['processViewTasks', props.focus.process],
         async () => {
-            const response = await fetch(`${apiUrl}/process/${props.process.toString()}`);
+            const response = await fetch(`${apiUrl}/process/${props.focus.process.toString()}`);
             if (!response.ok) {
                 throw new Error('Failed to fetch tasks');
             }
@@ -44,7 +44,7 @@ const Process: React.FC<ProcessProps> = (props) => {
     const { setCenter } = useReactFlow();
 
     React.useEffect(() => {
-        const targetNode = nodes[props.focus];
+        const targetNode = nodes[props.focus.step];
         if (targetNode) {
             setCenter(
                 targetNode.position.x + 380,
@@ -55,7 +55,8 @@ const Process: React.FC<ProcessProps> = (props) => {
                 }
             );
         }
-    }, [props.focus, props.reFocus, setCenter, nodes])
+        // }, [props.focus, props.reFocus, setCenter, nodes])
+    }, [props.focus, setCenter, nodes])
 
     const nodeTypes = React.useMemo(() => ({ task: TaskNode }), []);
 
