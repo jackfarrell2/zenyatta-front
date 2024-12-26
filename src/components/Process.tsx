@@ -8,6 +8,7 @@ import { useQuery } from '@tanstack/react-query';
 import config from '../config'
 import { FocusContext, FocusContextType } from './ProcessDash';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import TaskModal from './TaskModal';
 
 const apiUrl = `${config.apiUrl}`
 
@@ -19,9 +20,31 @@ interface ProcessProps {
     initialProcess: number;
 }
 
+export interface TaskModalStateType {
+    open: boolean;
+    step: number;
+}
+
+const defaultTaskModalState: TaskModalStateType = {
+    open: false,
+    step: 1,
+}
+export interface TaskModalContextType {
+    taskModalState: TaskModalStateType
+    setTaskModalState: React.Dispatch<React.SetStateAction<TaskModalStateType>>;
+}
+
+const defaultTaskModalContext: TaskModalContextType = {
+    taskModalState: defaultTaskModalState,
+    setTaskModalState: () => { }
+}
+
+export const TaskModalContext = React.createContext<TaskModalContextType>(defaultTaskModalContext)
+
 const Process: React.FC<ProcessProps> = (props) => {
     const [nodes, setNodes] = React.useState<Node[]>([]);
     const [edges, setEdges] = React.useState<Edge[]>([]);
+    const [taskModalState, setTaskModalState] = React.useState<TaskModalStateType>(defaultTaskModalState)
     const { focus, setFocus } = React.useContext<FocusContextType>(FocusContext)
 
     const { isLoading: tasksLoading } = useQuery(
@@ -84,36 +107,41 @@ const Process: React.FC<ProcessProps> = (props) => {
 
 
     return (
-        <Box sx={{ height: '100vh', width: '85vw', p: 0, m: 0 }}>
-            {(tasksLoading || nodes.length === 0) ? (
-                <Box>
-                    <CircularProgress />
+        <>
+            <TaskModalContext.Provider value={{ taskModalState, setTaskModalState }}>
+                <TaskModal open={taskModalState['open']} setTaskModalState={setTaskModalState} />
+                <Box sx={{ height: '100vh', width: '85vw', p: 0, m: 0 }}>
+                    {(tasksLoading || nodes.length === 0) ? (
+                        <Box>
+                            <CircularProgress />
+                        </Box>
+                    ) : (
+                        <div style={{ height: '100%', 'width': '100%' }}>
+                            <ReactFlow
+                                nodes={nodes}
+                                edges={edges}
+                                onNodesChange={onNodesChange}
+                                onEdgesChange={onEdgesChange}
+                                onConnect={onConnect}
+                                nodeTypes={nodeTypes}
+                                fitView
+                                style={rfStyle}
+                                nodesDraggable={false}
+                                zoomOnDoubleClick={false}
+                            >
+                                <Panel position='top-left'>
+                                    <IconButton size='large' disabled={(props.initialProcess === focus.process) ? true : false} onClick={handleBackClick}>
+                                        <ArrowBackIcon />
+                                    </IconButton>
+                                </Panel>
+                                <Background />
+                                <Controls />
+                            </ReactFlow>
+                        </div>
+                    )}
                 </Box>
-            ) : (
-                <div style={{ height: '100%', 'width': '100%' }}>
-                    <ReactFlow
-                        nodes={nodes}
-                        edges={edges}
-                        onNodesChange={onNodesChange}
-                        onEdgesChange={onEdgesChange}
-                        onConnect={onConnect}
-                        nodeTypes={nodeTypes}
-                        fitView
-                        style={rfStyle}
-                        nodesDraggable={false}
-                        zoomOnDoubleClick={false}
-                    >
-                        <Panel position='top-left'>
-                            <IconButton size='large' disabled={(props.initialProcess === focus.process) ? true : false} onClick={handleBackClick}>
-                                <ArrowBackIcon />
-                            </IconButton>
-                        </Panel>
-                        <Background />
-                        <Controls />
-                    </ReactFlow>
-                </div>
-            )}
-        </Box>
+            </TaskModalContext.Provider>
+        </>
     );
 }
 

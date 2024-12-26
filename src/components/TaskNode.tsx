@@ -1,9 +1,10 @@
 import React from 'react';
 import TaskBody from './taskcomponents/TaskBody';
 import TaskHeader from './taskcomponents/TaskHeader';
-import { Stack, Box } from '@mui/material'
+import { Stack, Box, Paper } from '@mui/material'
 import { Handle, Position } from '@xyflow/react';
 import { FocusContext, FocusContextType } from './ProcessDash';
+import { TaskModalContext, TaskModalContextType } from './Process';
 interface TaskNodeProps {
     data: {
         label: string;
@@ -16,33 +17,38 @@ interface TaskNodeProps {
 
 const TaskNode: React.FC<TaskNodeProps> = ({ data, isConnectable }: TaskNodeProps) => {
     const { setFocus } = React.useContext<FocusContextType>(FocusContext)
+    const { setTaskModalState } = React.useContext<TaskModalContextType>(TaskModalContext)
     const handleDoubleClick = (data: TaskNodeProps['data']) => {
         if (data.isLeaf) {
-            console.log('do what the leaf should do')
+            setTaskModalState({ open: true, step: data.stepNumber })
         } else {
             setFocus({ process: data.linkedProcessId, step: data.stepNumber })
         }
     }
     return (
-        <Stack className={data.isLeaf ? 'task-node' : 'process-node'} alignItems='stretch' spacing={0} onDoubleClick={() => handleDoubleClick(data)}>
-            <Handle
-                type='target'
-                position={Position.Top}
-                isConnectable={isConnectable}
-            />
-            <Box sx={{ height: '15%' }}>
-                <TaskHeader />
-            </Box>
-            <Box sx={{ height: '85%' }}>
-                <TaskBody content={data.label} />
-            </Box>
-            <Handle
-                type='source'
-                position={Position.Bottom}
-                id='a'
-                isConnectable={isConnectable}
-            />
-        </Stack>
+        <>
+            <Paper elevation={12}>
+                <Stack className={data.isLeaf ? 'task-node' : 'process-node'} alignItems='stretch' spacing={0} onDoubleClick={() => handleDoubleClick(data)}>
+                    <Handle
+                        type='target'
+                        position={Position.Top}
+                        isConnectable={isConnectable}
+                    />
+                    <Box sx={{ height: '15%' }}>
+                        <TaskHeader />
+                    </Box>
+                    <Box sx={{ height: '85%' }}>
+                        <TaskBody content={data.label} />
+                    </Box>
+                    <Handle
+                        type='source'
+                        position={Position.Bottom}
+                        id='a'
+                        isConnectable={isConnectable}
+                    />
+                </Stack>
+            </Paper>
+        </>
     )
 }
 
