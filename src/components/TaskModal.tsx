@@ -6,8 +6,10 @@ import { FocusContext, FocusContextType } from './ProcessDash';
 import { TaskModalStateType, TaskModalContext, TaskModalContextType } from './Process';
 import config from '../config';
 import { useQuery } from '@tanstack/react-query';
-import { CKEditor } from '@ckeditor/ckeditor5-react';
-import { ClassicEditor, Essentials, Paragraph, Bold, Italic } from 'ckeditor5';
+import { EditorProvider, FloatingMenu, BubbleMenu } from '@tiptap/react'
+import StarterKit from '@tiptap/starter-kit'
+
+const extensions = [StarterKit]
 
 
 
@@ -38,12 +40,15 @@ const TaskModal: FC<TaskModalProps> = ({ open, setTaskModalState }) => {
     const [content, setContent] = React.useState('')
 
     const handleClose = () => {
-        setTaskModalState({ open: false, step: 1 })
+        setTaskModalState({ open: false, step: null })
     }
 
     const { isLoading: taskLoading } = useQuery(
         ['taskContent', taskModalState],
         async () => {
+            if (taskModalState.step === null) {
+                throw new Error('No step to fetch')
+            }
             const response = await fetch(`${apiUrl}/task/${focus.process.toString()}/${taskModalState.step.toString()}`);
             if (!response.ok) {
                 throw new Error('Failed to fetch task content');
@@ -70,16 +75,10 @@ const TaskModal: FC<TaskModalProps> = ({ open, setTaskModalState }) => {
                     <div><CircularProgress /></div>
                 ) : (
                     <>
-                        <div>{content}</div>
-                        <CKEditor
-                            editor={ClassicEditor}
-                            config={{
-                                licenseKey: 'GPL', // Or 'GPL'.
-                                plugins: [Essentials, Paragraph, Bold, Italic],
-                                toolbar: ['undo', 'redo', '|', 'bold', 'italic', '|',],
-                                initialData: '<p>Hello from CKEditor 5 in React!</p>',
-                            }}
-                        />
+                        <EditorProvider extensions={extensions} content={content}>
+                            <FloatingMenu editor={null}>This is the floating menu</FloatingMenu>
+                            <BubbleMenu editor={null}>This is the bubble menu</BubbleMenu>
+                        </EditorProvider>
                     </>
                 )}
             </Box>

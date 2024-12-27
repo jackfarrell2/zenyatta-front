@@ -22,12 +22,12 @@ interface ProcessProps {
 
 export interface TaskModalStateType {
     open: boolean;
-    step: number;
+    step: number | null
 }
 
 const defaultTaskModalState: TaskModalStateType = {
     open: false,
-    step: 1,
+    step: null,
 }
 export interface TaskModalContextType {
     taskModalState: TaskModalStateType
