@@ -6,6 +6,10 @@ import { FocusContext, FocusContextType } from './ProcessDash';
 import { TaskModalStateType, TaskModalContext, TaskModalContextType } from './Process';
 import config from '../config';
 import { useQuery } from '@tanstack/react-query';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import { ClassicEditor, Essentials, Paragraph, Bold, Italic } from 'ckeditor5';
+
+
 
 const apiUrl = `${config.apiUrl}`
 
@@ -32,6 +36,7 @@ const TaskModal: FC<TaskModalProps> = ({ open, setTaskModalState }) => {
     const { focus } = React.useContext<FocusContextType>(FocusContext)
     const { taskModalState } = React.useContext<TaskModalContextType>(TaskModalContext)
     const [content, setContent] = React.useState('')
+
     const handleClose = () => {
         setTaskModalState({ open: false, step: 1 })
     }
@@ -64,7 +69,18 @@ const TaskModal: FC<TaskModalProps> = ({ open, setTaskModalState }) => {
                 {taskLoading ? (
                     <div><CircularProgress /></div>
                 ) : (
-                    <div>{content}</div>
+                    <>
+                        <div>{content}</div>
+                        <CKEditor
+                            editor={ClassicEditor}
+                            config={{
+                                licenseKey: 'GPL', // Or 'GPL'.
+                                plugins: [Essentials, Paragraph, Bold, Italic],
+                                toolbar: ['undo', 'redo', '|', 'bold', 'italic', '|',],
+                                initialData: '<p>Hello from CKEditor 5 in React!</p>',
+                            }}
+                        />
+                    </>
                 )}
             </Box>
         </Modal>

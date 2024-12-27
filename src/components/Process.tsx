@@ -80,7 +80,7 @@ const Process: React.FC<ProcessProps> = (props) => {
                 }
             );
         }
-    }, [focus, setCenter, nodes])
+    }, [focus.step, setCenter, nodes])
 
     const nodeTypes = React.useMemo(() => ({ task: TaskNode }), []);
 
