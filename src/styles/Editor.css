@@ -1,0 +1,96 @@
+/* styles.css */
+
+.editor-props-class {
+    background-color: #ffffff;
+    border: 1px solid #C7C7C7;
+    display: flex;
+    flex-direction: column;
+    min-height: 1054px;
+    width: 816px;
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+    cursor: text;
+}
+
+.editor-props-class:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #005fcc;
+}
+
+@media print {
+    .editor-props-class {
+        border: 0;
+    }
+}
+
+/* First Div */
+.editor-container {
+    width: 100%;
+    overflow-x: auto;
+    background-color: #F9FBFD;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+/* Second Div */
+.editor-content {
+    min-width: max-content;
+    display: flex;
+    justify-content: center;
+    width: 816px;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Combined Print Styles */
+@media print {
+    .editor-container {
+        padding: 0;
+        background-color: white;
+        overflow: visible;
+    }
+
+    .editor-content {
+        padding-top: 0;
+        padding-bottom: 0;
+        width: 100%;
+        min-width: 0;
+    }
+
+    .no-focus-outline:focus {}
+
+    /* Add more print styles here as needed */
+}
+
+/* .editor-container {
+    width: 100%;
+    height: 100%;
+    overflow-x: auto;
+    background-color: #F9FBFD;
+    padding: 0 1rem;
+}
+
+.editor-content {
+    min-width: max-content;
+    display: flex;
+    justify-content: center;
+    width: 816px;
+    padding: 1rem 0;
+    margin: 0 auto;
+}
+
+@media print {
+    .editor-container {
+        padding: 0;
+        background-color: white;
+        overflow: visible;
+    }
+
+    .editor-content {
+        padding: 0;
+        width: 100%;
+        min-width: 0;
+    }
+} */

@@ -1,7 +1,8 @@
 import React from 'react';
 import './index.css';
 
-import ProcessDash from './components/ProcessDash';
+// import ProcessDash from './components/ProcessDash';
+import Document from './components/Document';
 import { Box } from '@mui/material'
 
 const testing: boolean = true;
@@ -13,7 +14,7 @@ function App() {
         height: '100vh',
         width: '100vw',
       }}>
-        <ProcessDash />
+        <Document />
       </Box>
     )
   } else {

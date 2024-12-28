@@ -11,8 +11,6 @@ import StarterKit from '@tiptap/starter-kit'
 
 const extensions = [StarterKit]
 
-
-
 const apiUrl = `${config.apiUrl}`
 
 const style = {
@@ -34,22 +32,26 @@ interface TaskModalProps {
     setTaskModalState: (newState: TaskModalStateType) => void;
 }
 
+type ContentType = string | null
+
 const TaskModal: FC<TaskModalProps> = ({ open, setTaskModalState }) => {
     const { focus } = React.useContext<FocusContextType>(FocusContext)
     const { taskModalState } = React.useContext<TaskModalContextType>(TaskModalContext)
-    const [content, setContent] = React.useState('')
+    const [content, setContent] = React.useState<ContentType>(null)
 
     const handleClose = () => {
         setTaskModalState({ open: false, step: null })
+        setContent(null)
     }
 
     const { isLoading: taskLoading } = useQuery(
         ['taskContent', taskModalState],
         async () => {
             if (taskModalState.step === null) {
-                throw new Error('No step to fetch')
+                return null
             }
-            const response = await fetch(`${apiUrl}/task/${focus.process.toString()}/${taskModalState.step.toString()}`);
+            const taskStep = taskModalState.step
+            const response = await fetch(`${apiUrl}/task/${focus.process.toString()}/${taskStep.toString()}`);
             if (!response.ok) {
                 throw new Error('Failed to fetch task content');
             }
@@ -58,7 +60,9 @@ const TaskModal: FC<TaskModalProps> = ({ open, setTaskModalState }) => {
         },
         {
             onSuccess: (res) => {
-                setContent(res.data.content)
+                if (res) {
+                    setContent(res.data.content)
+                }
             },
             refetchOnWindowFocus: false,
         },
@@ -71,7 +75,7 @@ const TaskModal: FC<TaskModalProps> = ({ open, setTaskModalState }) => {
                 <Button onClick={handleClose} sx={{ color: 'primary' }}>
                     <CloseIcon sx={{ color: 'primary' }} />
                 </Button>
-                {taskLoading ? (
+                {taskLoading || content === null ? (
                     <div><CircularProgress /></div>
                 ) : (
                     <>
