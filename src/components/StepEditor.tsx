@@ -13,6 +13,8 @@ import StepDocumentToolbar from './StepDocumentToolbar';
 import Underline from '@tiptap/extension-underline';
 import FontFamily from '@tiptap/extension-font-family';
 import TextStyle from '@tiptap/extension-text-style';
+import { Color } from '@tiptap/extension-color';
+import Highlight from '@tiptap/extension-highlight';
 
 
 const StepEditor: FC = () => {
@@ -25,6 +27,10 @@ const StepEditor: FC = () => {
         },
         extensions: [
             StarterKit,
+            Color,
+            Highlight.configure({
+                multicolor: true
+            }),
             FontFamily,
             TextStyle,
             Underline,
