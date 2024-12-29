@@ -15,7 +15,7 @@ import Grid from '@mui/material/Grid2'
 import FontFamilyButton from './FontFamilyButton';
 import HeadingButton from './HeadingButton';
 import TextColorButton from './TextColorButton';
-
+import HighlightColorButton from './HighlightColorButton';
 interface StepDocumentToolbarProps {
     editor: Editor | null
 }
@@ -70,6 +70,7 @@ const StepDocumentToolbar: FC<StepDocumentToolbarProps> = ({ editor }) => {
                     <FormatUnderlinedIcon fontSize='small' />
                 </IconButton>
                 <TextColorButton editor={editor} />
+                <HighlightColorButton editor={editor} />
                 <Divider orientation="vertical" variant="middle" flexItem />
                 <IconButton
                     onClick={() => editor?.chain().focus().toggleTaskList().run()}
