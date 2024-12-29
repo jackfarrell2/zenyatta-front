@@ -1,5 +1,15 @@
 .tiptap {
 
+    /* Link styles */
+    a {
+        color: blue;
+        cursor: pointer;
+
+        &:hover {
+            color: purple;
+        }
+    }
+
     .heading-menu-item {
         display: flex;
         align-items: center;

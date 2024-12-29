@@ -16,6 +16,7 @@ import FontFamilyButton from './FontFamilyButton';
 import HeadingButton from './HeadingButton';
 import TextColorButton from './TextColorButton';
 import HighlightColorButton from './HighlightColorButton';
+import LinkButton from './LinkButton';
 interface StepDocumentToolbarProps {
     editor: Editor | null
 }
@@ -72,6 +73,8 @@ const StepDocumentToolbar: FC<StepDocumentToolbarProps> = ({ editor }) => {
                 <TextColorButton editor={editor} />
                 <HighlightColorButton editor={editor} />
                 <Divider orientation="vertical" variant="middle" flexItem />
+                <LinkButton editor={editor} />
+                <Divider orientation='vertical' variant='middle' flexItem />
                 <IconButton
                     onClick={() => editor?.chain().focus().toggleTaskList().run()}
                     sx={toolbarButtonStyles(editor?.isActive('taskList') || false)}

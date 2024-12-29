@@ -15,6 +15,8 @@ import FontFamily from '@tiptap/extension-font-family';
 import TextStyle from '@tiptap/extension-text-style';
 import { Color } from '@tiptap/extension-color';
 import Highlight from '@tiptap/extension-highlight';
+import Image from '@tiptap/extension-image';
+import Link from '@tiptap/extension-link';
 
 
 const StepEditor: FC = () => {
@@ -27,6 +29,11 @@ const StepEditor: FC = () => {
         },
         extensions: [
             StarterKit,
+            Image,
+            Link.configure({
+                autolink: true,
+                defaultProtocol: 'https'
+            }),
             Color,
             Highlight.configure({
                 multicolor: true
