@@ -12,6 +12,7 @@ import FormatClearIcon from '@mui/icons-material/FormatClear';
 import { IconButton, Divider } from '@mui/material'
 import { Editor } from '@tiptap/react';
 import Grid from '@mui/material/Grid2'
+import FontFamilyButton from './FontFamilyButton';
 
 interface StepDocumentToolbarProps {
     editor: Editor | null
@@ -41,7 +42,9 @@ const StepDocumentToolbar: FC<StepDocumentToolbarProps> = ({ editor }) => {
                 >
                     <RedoIcon fontSize='small' />
                 </IconButton>
-                <Divider orientation="vertical" variant="middle" flexItem />
+                <Divider orientation='vertical' variant='middle' flexItem />
+                <FontFamilyButton editor={editor} />
+                <Divider orientation='vertical' variant='middle' flexItem />
                 <IconButton
                     onClick={() => editor?.chain().focus().toggleBold().run()}
                     sx={toolbarButtonStyles(editor?.isActive('bold') || false)} // Active if bold

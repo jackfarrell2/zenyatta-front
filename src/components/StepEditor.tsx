@@ -1,4 +1,3 @@
-import React from 'react';
 import { FC } from 'react';
 import { useEditor, EditorContent } from '@tiptap/react';
 import '../styles/Editor.css';
@@ -12,6 +11,8 @@ import TableRow from '@tiptap/extension-table-row';
 import ImageResize from 'tiptap-extension-resize-image';
 import StepDocumentToolbar from './StepDocumentToolbar';
 import Underline from '@tiptap/extension-underline';
+import FontFamily from '@tiptap/extension-font-family';
+import TextStyle from '@tiptap/extension-text-style';
 
 
 const StepEditor: FC = () => {
@@ -24,6 +25,8 @@ const StepEditor: FC = () => {
         },
         extensions: [
             StarterKit,
+            FontFamily,
+            TextStyle,
             Underline,
             ImageResize,
             Table,
