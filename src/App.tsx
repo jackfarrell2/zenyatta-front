@@ -2,7 +2,7 @@ import React from 'react';
 import './index.css';
 
 // import ProcessDash from './components/ProcessDash';
-import Document from './components/Document';
+import StepEditor from './components/StepEditor';
 import { Box } from '@mui/material'
 
 const testing: boolean = true;
@@ -14,7 +14,7 @@ function App() {
         height: '100vh',
         width: '100vw',
       }}>
-        <Document />
+        <StepEditor />
       </Box>
     )
   } else {
