@@ -1,24 +1,37 @@
 .tiptap {
+
+    .heading-menu-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5 rem;
+        padding: 0.25rem 0.5 rem;
+        border-radius: 0.125 rem;
+        transition: background-color 0.2s ease-in-out;
+    }
+
+    .heading-menu-item:hover {
+        background-color: rgba(220, 220, 220, 0.8)
+    }
+
+    .heading-menu-item-active {
+        background-color: rgba(220, 220, 220, 0.8);
+    }
+
     .menu-item {
         display: flex;
         align-items: center;
         gap: 0.5rem;
-        /* Tailwind gap-x-2 */
         padding: 0.25rem 0.5rem;
-        /* Tailwind px-2 py-1 */
         border-radius: 0.125rem;
-        /* Tailwind rounded-sm */
         transition: background-color 0.2s ease-in-out;
     }
 
     .menu-item:hover {
         background-color: rgba(220, 220, 220, 0.8);
-        /* Tailwind hover:bg-neutral-200/80 */
     }
 
     .menu-item-active {
         background-color: rgba(220, 220, 220, 0.8);
-        /* Tailwind bg-neutral-200/80 */
     }
 
     img {

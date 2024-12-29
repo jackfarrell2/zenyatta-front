@@ -13,6 +13,7 @@ import { IconButton, Divider } from '@mui/material'
 import { Editor } from '@tiptap/react';
 import Grid from '@mui/material/Grid2'
 import FontFamilyButton from './FontFamilyButton';
+import HeadingButton from './HeadingButton';
 
 interface StepDocumentToolbarProps {
     editor: Editor | null
@@ -44,6 +45,7 @@ const StepDocumentToolbar: FC<StepDocumentToolbarProps> = ({ editor }) => {
                 </IconButton>
                 <Divider orientation='vertical' variant='middle' flexItem />
                 <FontFamilyButton editor={editor} />
+                <HeadingButton editor={editor} />
                 <Divider orientation='vertical' variant='middle' flexItem />
                 <IconButton
                     onClick={() => editor?.chain().focus().toggleBold().run()}
