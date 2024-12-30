@@ -54,6 +54,11 @@ const ImageButton: FC<ImageButtonProps> = ({ editor }) => {
         }
     }
 
+    const handleDialogClose = () => {
+        setIsDialogOpen(false);
+        setImageUrl('')
+    }
+
     return (
         <>
             <FormControl size='small'>
@@ -88,7 +93,7 @@ const ImageButton: FC<ImageButtonProps> = ({ editor }) => {
                     </Paper>
                 </Popper>
             </FormControl>
-            <Dialog open={isDialogOpen}>
+            <Dialog open={isDialogOpen} onClose={handleDialogClose}>
                 <DialogTitle>Insert image URL</DialogTitle>
                 <DialogContent>
                     <Input
