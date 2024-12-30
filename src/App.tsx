@@ -13,6 +13,7 @@ function App() {
       <Box sx={{
         height: '100vh',
         width: '100vw',
+        overflow: 'auto'
       }}>
         <StepEditor />
       </Box>
