@@ -19,6 +19,7 @@ import HighlightColorButton from './HighlightColorButton';
 import LinkButton from './LinkButton';
 import ImageButton from './ImageButton';
 import AlignButton from './AlignButton';
+import FontSizeButton from './FontSizeButton';
 interface StepDocumentToolbarProps {
     editor: Editor | null
 }
@@ -35,21 +36,23 @@ const StepDocumentToolbar: FC<StepDocumentToolbarProps> = ({ editor }) => {
             <Grid container direction='row' justifyContent='' alignItems='center' spacing={1}>
                 <IconButton
                     onClick={() => editor?.chain().focus().undo().run()}
-                    sx={toolbarButtonStyles(false)} // Always inactive
+                    sx={toolbarButtonStyles(false)}
                     size='small'
                 >
                     <UndoIcon fontSize='small' />
                 </IconButton>
                 <IconButton
                     onClick={() => editor?.chain().focus().redo().run()}
-                    sx={toolbarButtonStyles(false)} // Always inactive
+                    sx={toolbarButtonStyles(false)}
                     size='small'
                 >
                     <RedoIcon fontSize='small' />
                 </IconButton>
                 <Divider orientation='vertical' variant='middle' flexItem />
-                <FontFamilyButton editor={editor} />
                 <HeadingButton editor={editor} />
+                <FontFamilyButton editor={editor} />
+                <Divider orientation='vertical' variant='middle' flexItem />
+                <FontSizeButton editor={editor} />
                 <Divider orientation='vertical' variant='middle' flexItem />
                 <IconButton
                     onClick={() => editor?.chain().focus().toggleBold().run()}

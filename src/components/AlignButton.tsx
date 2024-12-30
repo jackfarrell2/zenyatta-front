@@ -40,7 +40,10 @@ const AlignButton: FC<AlignButtonProps> = ({ editor }) => {
                             <List>
                                 {/* Left */}
                                 <ListItem disablePadding>
-                                    <ListItemButton onClick={() => editor?.chain().focus().setTextAlign('left').run()}>
+                                    <ListItemButton onClick={() => {
+                                        editor?.chain().focus().setTextAlign('left').run()
+                                        setAnchorEl(null)
+                                    }}>
                                         <ListItemIcon>
                                             <FormatAlignLeftIcon fontSize='small' />
                                         </ListItemIcon>
@@ -49,7 +52,10 @@ const AlignButton: FC<AlignButtonProps> = ({ editor }) => {
                                 </ListItem>
                                 {/* Center */}
                                 <ListItem disablePadding>
-                                    <ListItemButton onClick={() => editor?.chain().focus().setTextAlign('center').run()}>
+                                    <ListItemButton onClick={() => {
+                                        editor?.chain().focus().setTextAlign('center').run()
+                                        setAnchorEl(null)
+                                    }}>
                                         <ListItemIcon>
                                             <FormatAlignCenterIcon fontSize='small' />
                                         </ListItemIcon>
@@ -58,7 +64,10 @@ const AlignButton: FC<AlignButtonProps> = ({ editor }) => {
                                 </ListItem>
                                 {/* Right */}
                                 <ListItem disablePadding>
-                                    <ListItemButton onClick={() => editor?.chain().focus().setTextAlign('right').run()}>
+                                    <ListItemButton onClick={() => {
+                                        editor?.chain().focus().setTextAlign('right').run()
+                                        setAnchorEl(null)
+                                    }}>
                                         <ListItemIcon>
                                             <FormatAlignRightIcon fontSize='small' />
                                         </ListItemIcon>
@@ -67,7 +76,10 @@ const AlignButton: FC<AlignButtonProps> = ({ editor }) => {
                                 </ListItem>
                                 {/* Justify */}
                                 <ListItem disablePadding>
-                                    <ListItemButton onClick={() => editor?.chain().focus().setTextAlign('justify').run()}>
+                                    <ListItemButton onClick={() => {
+                                        editor?.chain().focus().setTextAlign('justify').run()
+                                        setAnchorEl(null)
+                                    }}>
                                         <ListItemIcon>
                                             <FormatAlignJustifyIcon fontSize='small' />
                                         </ListItemIcon>

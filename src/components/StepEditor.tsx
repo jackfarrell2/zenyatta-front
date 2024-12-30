@@ -18,6 +18,7 @@ import { Color } from '@tiptap/extension-color';
 import Highlight from '@tiptap/extension-highlight';
 import Image from '@tiptap/extension-image';
 import Link from '@tiptap/extension-link';
+import { FontSizeExtension } from '../utils/font-size';
 
 const StepEditor: FC = () => {
     const editor = useEditor({
@@ -46,6 +47,7 @@ const StepEditor: FC = () => {
         },
         extensions: [
             StarterKit,
+            FontSizeExtension,
             TextAlign.configure({
                 types: ['heading', 'paragraph']
             }),
