@@ -4,6 +4,7 @@ import '../styles/Editor.css';
 import StarterKit from '@tiptap/starter-kit';
 import TaskItem from '@tiptap/extension-task-item';
 import TaskList from '@tiptap/extension-task-list';
+import TextAlign from '@tiptap/extension-text-align';
 import Table from '@tiptap/extension-table';
 import TableCell from '@tiptap/extension-table-cell';
 import TableHeader from '@tiptap/extension-table-header';
@@ -45,6 +46,9 @@ const StepEditor: FC = () => {
         },
         extensions: [
             StarterKit,
+            TextAlign.configure({
+                types: ['heading', 'paragraph']
+            }),
             Image.configure({
                 inline: true,
                 allowBase64: true,
