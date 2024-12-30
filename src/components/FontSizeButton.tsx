@@ -44,20 +44,19 @@ const FontSizeButton: FC<FontSizeButtonProps> = ({ editor }) => {
         ? editor?.getAttributes('textStyle').fontSize.replace('px', '')
         : '16';
 
-    console.log('currentFontSize', currentFontSize)
-
     const [fontSize, setFontSize] = React.useState(currentFontSize);
     const [inputValue, setInputValue] = React.useState(fontSize);
     const [isEditing, setIsEditing] = React.useState(false);
 
-    const updateFontSize = (newSize: string) => {
+    const updateFontSize = (newSize: string, stopEdit: boolean) => {
         const size = parseInt(newSize);
         if (!isNaN(size) && size > 0 && size < 99) {
             editor?.chain().focus().setFontSize(`${size}px`).run();
             setFontSize(newSize);
-            console.log('setting the input value to ', newSize)
             setInputValue(newSize);
-            setIsEditing(false);
+            if (stopEdit) {
+                setIsEditing(false)
+            }
         }
     };
 
@@ -66,29 +65,35 @@ const FontSizeButton: FC<FontSizeButtonProps> = ({ editor }) => {
     }
 
     const handleInputBlur = () => {
-        console.log('blurring')
-        updateFontSize(inputValue);
+        updateFontSize(inputValue, true);
     }
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
             e.preventDefault();
-            updateFontSize(inputValue);
+            updateFontSize(inputValue, true);
             editor?.commands.focus();
         }
     };
 
     const increment = () => {
         const newSize = parseInt(fontSize) + 1;
-        updateFontSize(newSize.toString());
+        updateFontSize(newSize.toString(), true);
     }
 
     const decrement = () => {
         const newSize = parseInt(fontSize) - 1;
         if (newSize > 0) {
-            updateFontSize(newSize.toString());
+            updateFontSize(newSize.toString(), true);
         }
     }
+
+    const fontSizeAttribute = editor?.getAttributes('textStyle').fontSize;
+
+    React.useEffect(() => {
+        const theFontSize = fontSizeAttribute ? fontSizeAttribute.replace('px', '') : '16';
+        setFontSize(theFontSize)
+    }, [editor, fontSizeAttribute])
 
     return (
         <div>
@@ -104,7 +109,7 @@ const FontSizeButton: FC<FontSizeButtonProps> = ({ editor }) => {
             ) : (
                 <button onClick={() => {
                     setIsEditing(true);
-                    setFontSize(currentFontSize);
+                    updateFontSize(currentFontSize, false);
                 }} style={buttonStyles}>
                     {currentFontSize}
                 </button>
