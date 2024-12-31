@@ -4,6 +4,7 @@ import { FormControl, IconButton, Paper, Popper, Box, List, ListItem, ListItemBu
 import AddPhotoAlternateOutlinedIcon from '@mui/icons-material/AddPhotoAlternateOutlined';
 import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
 import ImageSearchOutlinedIcon from '@mui/icons-material/ImageSearchOutlined';
+import { ClickAwayListener } from '@mui/material';
 
 interface ImageButtonProps {
     editor: Editor | null
@@ -61,38 +62,40 @@ const ImageButton: FC<ImageButtonProps> = ({ editor }) => {
 
     return (
         <>
-            <FormControl size='small'>
-                <IconButton onClick={handleClick} className='button-base' size='small' sx={toolbarButtonStyles(false)}>
-                    <AddPhotoAlternateOutlinedIcon fontSize='small' />
-                </IconButton>
+            <ClickAwayListener onClickAway={() => setAnchorEl(null)}>
+                <FormControl size='small'>
+                    <IconButton onClick={handleClick} className='button-base' size='small' sx={toolbarButtonStyles(false)}>
+                        <AddPhotoAlternateOutlinedIcon fontSize='small' />
+                    </IconButton>
 
-                <Popper open={open} anchorEl={anchorEl} placement='bottom-start'>
-                    <Paper elevation={3} sx={{ p: 1, mt: 1 }}>
-                        <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-                            <nav>
-                                <List>
-                                    <ListItem disablePadding>
-                                        <ListItemButton onClick={onUpload}>
-                                            <ListItemIcon>
-                                                <FileUploadOutlinedIcon fontSize='small' />
-                                            </ListItemIcon>
-                                            <ListItemText primary="Upload" />
-                                        </ListItemButton>
-                                    </ListItem>
-                                    <ListItem disablePadding>
-                                        <ListItemButton onClick={() => setIsDialogOpen(true)}>
-                                            <ListItemIcon>
-                                                <ImageSearchOutlinedIcon fontSize='small' />
-                                            </ListItemIcon>
-                                            <ListItemText primary="Paste image url" />
-                                        </ListItemButton>
-                                    </ListItem>
-                                </List>
-                            </nav>
-                        </Box>
-                    </Paper>
-                </Popper>
-            </FormControl>
+                    <Popper open={open} anchorEl={anchorEl} placement='bottom-start'>
+                        <Paper elevation={3} sx={{ p: 1, mt: 1 }}>
+                            <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+                                <nav>
+                                    <List>
+                                        <ListItem disablePadding>
+                                            <ListItemButton onClick={onUpload}>
+                                                <ListItemIcon>
+                                                    <FileUploadOutlinedIcon fontSize='small' />
+                                                </ListItemIcon>
+                                                <ListItemText primary="Upload" />
+                                            </ListItemButton>
+                                        </ListItem>
+                                        <ListItem disablePadding>
+                                            <ListItemButton onClick={() => setIsDialogOpen(true)}>
+                                                <ListItemIcon>
+                                                    <ImageSearchOutlinedIcon fontSize='small' />
+                                                </ListItemIcon>
+                                                <ListItemText primary="Paste image url" />
+                                            </ListItemButton>
+                                        </ListItem>
+                                    </List>
+                                </nav>
+                            </Box>
+                        </Paper>
+                    </Popper>
+                </FormControl>
+            </ClickAwayListener>
             <Dialog open={isDialogOpen} onClose={handleDialogClose}>
                 <DialogTitle>Insert image URL</DialogTitle>
                 <DialogContent>

@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import { Editor } from '@tiptap/react';
 import { FormControl, IconButton, Paper, Popper, Input, Button, Box } from '@mui/material';
 import InsertLinkIcon from '@mui/icons-material/InsertLink';
+import { ClickAwayListener } from '@mui/material';
 
 interface LinkButtonProps {
     editor: Editor | null
@@ -36,25 +37,27 @@ const LinkButton: FC<LinkButtonProps> = ({ editor }) => {
     }
 
     return (
-        <FormControl size='small'>
-            <IconButton onClick={handleClick} className='button-base' size='small' sx={toolbarButtonStyles(false)}>
-                <InsertLinkIcon fontSize='small' />
-            </IconButton>
+        <ClickAwayListener onClickAway={() => setAnchorEl(null)}>
+            <FormControl size='small'>
+                <IconButton onClick={handleClick} className='button-base' size='small' sx={toolbarButtonStyles(false)}>
+                    <InsertLinkIcon fontSize='small' />
+                </IconButton>
 
-            <Popper open={open} anchorEl={anchorEl} placement='bottom-start'>
-                <Paper elevation={3} sx={{ p: 1, mt: 1 }}>
-                    <Box sx={{
-                        p: '10px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        columnGap: '8px'
-                    }}>
-                        <Input placeholder='https://example.com' value={value} onChange={(e) => setValue(e.target.value)} />
-                        <Button sx={{ textTransform: 'none', backgroundColor: 'black' }} variant='contained' size='small' onClick={() => onChange(value)}>Apply</Button>
-                    </Box>
-                </Paper>
-            </Popper>
-        </FormControl>
+                <Popper open={open} anchorEl={anchorEl} placement='bottom-start'>
+                    <Paper elevation={3} sx={{ p: 1, mt: 1 }}>
+                        <Box sx={{
+                            p: '10px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            columnGap: '8px'
+                        }}>
+                            <Input placeholder='https://example.com' value={value} onChange={(e) => setValue(e.target.value)} />
+                            <Button sx={{ textTransform: 'none', backgroundColor: 'black' }} variant='contained' size='small' onClick={() => onChange(value)}>Apply</Button>
+                        </Box>
+                    </Paper>
+                </Popper>
+            </FormControl>
+        </ClickAwayListener>
     )
 }
 

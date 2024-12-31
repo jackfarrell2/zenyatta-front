@@ -4,6 +4,7 @@ import { FormControl, IconButton, Popper, Paper } from '@mui/material';
 import '../styles/Editor.css';
 import { type ColorResult, SketchPicker } from 'react-color';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
+import { ClickAwayListener } from '@mui/material';
 
 interface HighlightColorButtonProps {
     editor: Editor | null
@@ -31,17 +32,19 @@ const HighlightColorButton: FC<HighlightColorButtonProps> = ({ editor }) => {
     }
 
     return (
-        <FormControl size='small'>
-            <IconButton onClick={handleClick} className='button-base' size='small' sx={toolbarButtonStyles(false)}>
-                <BorderColorIcon fontSize='small' sx={{ color: value === '#FFFFFF' || value === '#000000' || value === '#ffffff' ? '#000000' : value }} />
-            </IconButton>
+        <ClickAwayListener onClickAway={() => setAnchorEl(null)}>
+            <FormControl size='small'>
+                <IconButton onClick={handleClick} className='button-base' size='small' sx={toolbarButtonStyles(false)}>
+                    <BorderColorIcon fontSize='small' sx={{ color: value === '#FFFFFF' || value === '#000000' || value === '#ffffff' ? '#000000' : value }} />
+                </IconButton>
 
-            <Popper open={open} anchorEl={anchorEl} placement='bottom-start'>
-                <Paper elevation={3} sx={{ p: 1, mt: 1 }}>
-                    <SketchPicker color={value} onChange={onHighlightChange} />
-                </Paper>
-            </Popper>
-        </FormControl>
+                <Popper open={open} anchorEl={anchorEl} placement='bottom-start'>
+                    <Paper elevation={3} sx={{ p: 1, mt: 1 }}>
+                        <SketchPicker color={value} onChange={onHighlightChange} />
+                    </Paper>
+                </Popper>
+            </FormControl>
+        </ClickAwayListener>
     );
 }
 
