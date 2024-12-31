@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import '../styles/Editor.css';
+import '../../../styles/Editor.css';
 import UndoIcon from '@mui/icons-material/Undo';
 import RedoIcon from '@mui/icons-material/Redo';
 import FormatBoldIcon from '@mui/icons-material/FormatBold';
@@ -12,15 +12,15 @@ import FormatClearIcon from '@mui/icons-material/FormatClear';
 import { IconButton, Divider } from '@mui/material'
 import { Editor } from '@tiptap/react';
 import Grid from '@mui/material/Grid2'
-import FontFamilyButton from './FontFamilyButton';
-import HeadingButton from './HeadingButton';
-import TextColorButton from './TextColorButton';
-import HighlightColorButton from './HighlightColorButton';
-import LinkButton from './LinkButton';
-import ImageButton from './ImageButton';
-import AlignButton from './AlignButton';
-import FontSizeButton from './FontSizeButton';
-import SpacingButton from './SpacingButton';
+import FontFamilyButton from './buttons/FontFamilyButton';
+import HeadingButton from './buttons/HeadingButton';
+import TextColorButton from './buttons/TextColorButton';
+import HighlightColorButton from './buttons/HighlightColorButton';
+import LinkButton from './buttons/LinkButton';
+import ImageButton from './buttons/ImageButton';
+import AlignButton from './buttons/AlignButton';
+import FontSizeButton from './buttons/FontSizeButton';
+import SpacingButton from './buttons/SpacingButton';
 interface StepDocumentToolbarProps {
     editor: Editor | null
 }

@@ -2,9 +2,9 @@ import React from 'react';
 import { FC } from 'react';
 import { Modal, Box, Button, CircularProgress } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import { FocusContext, FocusContextType } from './ProcessDash';
-import { TaskModalStateType, TaskModalContext, TaskModalContextType } from './Process';
-import config from '../config';
+import { FocusContext, FocusContextType } from '../process/ProcessDash';
+import { TaskModalStateType, TaskModalContext, TaskModalContextType } from '../process/Process';
+import config from '../../config';
 import { useQuery } from '@tanstack/react-query';
 import { EditorProvider, FloatingMenu, BubbleMenu } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'

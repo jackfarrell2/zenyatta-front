@@ -1,5 +1,5 @@
 import { Node, Edge } from '@xyflow/react';
-import { APITask } from '../components/ProcessDash';
+import { APITask } from '../components/process/ProcessDash';
 
 const transformTasksToNodes = (tasks: APITask[]): Node[] => {
     return tasks.map((task, index) => ({

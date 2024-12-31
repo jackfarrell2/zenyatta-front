@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { useEditor, EditorContent } from '@tiptap/react';
-import '../styles/Editor.css';
+import '../../styles/Editor.css';
 import StarterKit from '@tiptap/starter-kit';
 import TaskItem from '@tiptap/extension-task-item';
 import TaskList from '@tiptap/extension-task-list';
@@ -10,7 +10,7 @@ import TableCell from '@tiptap/extension-table-cell';
 import TableHeader from '@tiptap/extension-table-header';
 import TableRow from '@tiptap/extension-table-row';
 import ImageResize from 'tiptap-extension-resize-image';
-import StepDocumentToolbar from './StepDocumentToolbar';
+import StepDocumentToolbar from '../manual/toolbar/StepDocumentToolbar';
 import Underline from '@tiptap/extension-underline';
 import FontFamily from '@tiptap/extension-font-family';
 import TextStyle from '@tiptap/extension-text-style';
@@ -18,8 +18,8 @@ import { Color } from '@tiptap/extension-color';
 import Highlight from '@tiptap/extension-highlight';
 import Image from '@tiptap/extension-image';
 import Link from '@tiptap/extension-link';
-import { FontSizeExtension } from '../utils/font-size';
-import { LineHeightExtension } from '../utils/line-height';
+import { FontSizeExtension } from '../../utils/font-size';
+import { LineHeightExtension } from '../../utils/line-height';
 
 const StepEditor: FC = () => {
     const editor = useEditor({

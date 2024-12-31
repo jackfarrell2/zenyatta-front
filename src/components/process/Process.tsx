@@ -2,13 +2,13 @@ import React from 'react';
 import { ReactFlow, Controls, Background, applyEdgeChanges, applyNodeChanges, NodeChange, EdgeChange, Node, Edge, Connection, addEdge, useReactFlow, Panel } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { Box, CircularProgress, IconButton } from '@mui/material';
-import TaskNode from './TaskNode';
-import { transformTasksToNodes, transformTasksToEdges } from '../utils/transformTasks';
+import TaskNode from '../task/TaskNode';
+import { transformTasksToNodes, transformTasksToEdges } from '../../utils/transformTasks';
 import { useQuery } from '@tanstack/react-query';
-import config from '../config'
+import config from '../../config'
 import { FocusContext, FocusContextType } from './ProcessDash';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import TaskModal from './TaskModal';
+import TaskModal from '../task/TaskModal';
 
 const apiUrl = `${config.apiUrl}`
 

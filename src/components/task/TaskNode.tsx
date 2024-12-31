@@ -1,10 +1,10 @@
 import React from 'react';
-import TaskBody from './taskcomponents/TaskBody';
-import TaskHeader from './taskcomponents/TaskHeader';
+import TaskBody from './TaskBody';
+import TaskHeader from './TaskHeader';
 import { Stack, Box, Paper } from '@mui/material'
 import { Handle, Position } from '@xyflow/react';
-import { FocusContext, FocusContextType } from './ProcessDash';
-import { TaskModalContext, TaskModalContextType } from './Process';
+import { FocusContext, FocusContextType } from '../process/ProcessDash';
+import { TaskModalContext, TaskModalContextType } from '../process/Process';
 interface TaskNodeProps {
     data: {
         label: string;

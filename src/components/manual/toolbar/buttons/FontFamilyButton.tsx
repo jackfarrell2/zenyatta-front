@@ -1,8 +1,8 @@
 import { FC } from 'react';
 import { Editor } from '@tiptap/react';
 import { SelectChangeEvent, FormControl, Select, MenuItem } from '@mui/material';
-import '../styles/Editor.css';
-import { cn } from '../util';
+import '../../../../styles/Editor.css';
+import { cn } from '../../../../util';
 
 interface FontFamilyButtonProps {
     editor: Editor | null

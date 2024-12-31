@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Box, CircularProgress } from '@mui/material';
 import { ChevronRight, ChevronDown, Folder, File } from 'lucide-react';
-import styles from '../styles/FileExplorer.module.css'
+import styles from '../../styles/FileExplorer.module.css'
 import { APITask } from './ProcessDash';
 import { useQuery } from '@tanstack/react-query';
-import config from '../config'
+import config from '../../config';
 import { FocusContext, FocusContextType } from './ProcessDash';
 
 const apiUrl = `${config.apiUrl}`

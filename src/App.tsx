@@ -1,8 +1,8 @@
 import React from 'react';
 import './index.css';
 
-// import ProcessDash from './components/ProcessDash';
-import StepEditor from './components/StepEditor';
+import ProcessDash from './components/process/ProcessDash';
+import StepEditor from './components/manual/StepEditor';
 import { Box } from '@mui/material'
 
 const testing: boolean = true;
@@ -20,9 +20,13 @@ function App() {
     )
   } else {
     return (
-      <div>
-        Application
-      </div>
+      <Box sx={{
+        height: '100vh',
+        width: '100vw',
+        overflow: 'auto'
+      }}>
+        <ProcessDash />
+      </Box>
     )
   }
 }
