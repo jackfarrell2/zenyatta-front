@@ -20,6 +20,7 @@ import LinkButton from './LinkButton';
 import ImageButton from './ImageButton';
 import AlignButton from './AlignButton';
 import FontSizeButton from './FontSizeButton';
+import SpacingButton from './SpacingButton';
 interface StepDocumentToolbarProps {
     editor: Editor | null
 }
@@ -82,6 +83,7 @@ const StepDocumentToolbar: FC<StepDocumentToolbarProps> = ({ editor }) => {
                 <ImageButton editor={editor} />
                 <Divider orientation='vertical' variant='middle' flexItem />
                 <AlignButton editor={editor} />
+                <SpacingButton editor={editor} />
                 <Divider orientation='vertical' variant='middle' flexItem />
                 <IconButton
                     onClick={() => editor?.chain().focus().toggleTaskList().run()}

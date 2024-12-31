@@ -1,5 +1,10 @@
 .tiptap {
 
+    p {
+        margin: 0;
+        line-height: 1
+    }
+
     /* Link styles */
     a {
         color: blue;

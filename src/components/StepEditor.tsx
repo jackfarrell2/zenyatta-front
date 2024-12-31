@@ -19,6 +19,7 @@ import Highlight from '@tiptap/extension-highlight';
 import Image from '@tiptap/extension-image';
 import Link from '@tiptap/extension-link';
 import { FontSizeExtension } from '../utils/font-size';
+import { LineHeightExtension } from '../utils/line-height';
 
 const StepEditor: FC = () => {
     const editor = useEditor({
@@ -48,6 +49,10 @@ const StepEditor: FC = () => {
         extensions: [
             StarterKit,
             FontSizeExtension,
+            LineHeightExtension.configure({
+                types: ['heading', 'paragraph'],
+                defaultLineHeight: 'normal'
+            }),
             TextAlign.configure({
                 types: ['heading', 'paragraph']
             }),
@@ -77,7 +82,7 @@ const StepEditor: FC = () => {
             TaskList,
         ],
         content: `
-        yerrrr
+        yerrrr\ngsd
       `,
     })
 
