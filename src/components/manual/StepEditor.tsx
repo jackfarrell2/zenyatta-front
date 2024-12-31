@@ -25,7 +25,7 @@ const StepEditor: FC = () => {
     const editor = useEditor({
         editorProps: {
             attributes: {
-                style: 'padding-left: 56px; padding-right: 56px;',
+                style: 'padding-top: 56px; padding-bottom: 56px; padding-left: 78px; padding-right: 78px;',
                 class: 'editor-props-class'
             },
             handlePaste: (view, event, slice) => {

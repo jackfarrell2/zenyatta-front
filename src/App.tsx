@@ -5,7 +5,7 @@ import ProcessDash from './components/process/ProcessDash';
 import StepEditor from './components/manual/StepEditor';
 import { Box } from '@mui/material'
 
-const testing: boolean = true;
+const testing: boolean = false;
 
 function App() {
   if (testing) {

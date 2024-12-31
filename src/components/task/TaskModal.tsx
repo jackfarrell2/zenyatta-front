@@ -6,10 +6,7 @@ import { FocusContext, FocusContextType } from '../process/ProcessDash';
 import { TaskModalStateType, TaskModalContext, TaskModalContextType } from '../process/Process';
 import config from '../../config';
 import { useQuery } from '@tanstack/react-query';
-import { EditorProvider, FloatingMenu, BubbleMenu } from '@tiptap/react'
-import StarterKit from '@tiptap/starter-kit'
-
-const extensions = [StarterKit]
+import StepEditor from '../manual/StepEditor';
 
 const apiUrl = `${config.apiUrl}`
 
@@ -79,10 +76,7 @@ const TaskModal: FC<TaskModalProps> = ({ open, setTaskModalState }) => {
                     <div><CircularProgress /></div>
                 ) : (
                     <>
-                        <EditorProvider extensions={extensions} content={content}>
-                            <FloatingMenu editor={null}>This is the floating menu</FloatingMenu>
-                            <BubbleMenu editor={null}>This is the bubble menu</BubbleMenu>
-                        </EditorProvider>
+                        <StepEditor />
                     </>
                 )}
             </Box>
