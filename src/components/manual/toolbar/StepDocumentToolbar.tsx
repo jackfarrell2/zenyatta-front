@@ -21,6 +21,7 @@ import ImageButton from './buttons/ImageButton';
 import AlignButton from './buttons/AlignButton';
 import FontSizeButton from './buttons/FontSizeButton';
 import SpacingButton from './buttons/SpacingButton';
+import SaveButton from './buttons/SaveButton';
 interface StepDocumentToolbarProps {
     editor: Editor | null
 }
@@ -113,6 +114,8 @@ const StepDocumentToolbar: FC<StepDocumentToolbarProps> = ({ editor }) => {
                 >
                     <FormatClearIcon fontSize='small' />
                 </IconButton>
+                <Divider orientation='vertical' variant='middle' flexItem />
+                <SaveButton editor={editor} />
             </Grid>
         </div>
     )

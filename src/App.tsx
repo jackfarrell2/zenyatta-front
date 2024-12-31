@@ -15,7 +15,7 @@ function App() {
         width: '100vw',
         overflow: 'auto'
       }}>
-        <StepEditor />
+        <div></div>
       </Box>
     )
   } else {

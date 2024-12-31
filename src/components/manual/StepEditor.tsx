@@ -21,7 +21,11 @@ import Link from '@tiptap/extension-link';
 import { FontSizeExtension } from '../../utils/font-size';
 import { LineHeightExtension } from '../../utils/line-height';
 
-const StepEditor: FC = () => {
+interface StepEditorProps {
+    content: JSON
+}
+
+const StepEditor: FC<StepEditorProps> = ({ content }) => {
     const editor = useEditor({
         editorProps: {
             attributes: {
@@ -81,9 +85,7 @@ const StepEditor: FC = () => {
             }),
             TaskList,
         ],
-        content: `
-        yerrrr\ngsd
-      `,
+        content: content
     })
 
     // Clean up object URLs when component unmounts
@@ -99,6 +101,7 @@ const StepEditor: FC = () => {
             });
         };
     }, []);
+
 
     return (
         <>

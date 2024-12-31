@@ -29,7 +29,7 @@ interface TaskModalProps {
     setTaskModalState: (newState: TaskModalStateType) => void;
 }
 
-type ContentType = string | null
+type ContentType = JSON | null
 
 const TaskModal: FC<TaskModalProps> = ({ open, setTaskModalState }) => {
     const { focus } = React.useContext<FocusContextType>(FocusContext)
@@ -76,7 +76,7 @@ const TaskModal: FC<TaskModalProps> = ({ open, setTaskModalState }) => {
                     <div><CircularProgress /></div>
                 ) : (
                     <>
-                        <StepEditor />
+                        <StepEditor content={content} />
                     </>
                 )}
             </Box>
