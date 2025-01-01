@@ -1,11 +1,11 @@
 import React, { FC } from 'react';
 import { Editor } from '@tiptap/react';
-import SaveIcon from '@mui/icons-material/Save';
 import { IconButton } from '@mui/material';
 import { useMutation } from '@tanstack/react-query'
 import config from '../../../../config';
 import { FocusContext, FocusContextType } from '../../../process/ProcessDash';
-import { TaskModalContext, TaskModalContextType } from '../../../process/Process';
+import { ManualContext, ManualContextType } from '../../../process/Process';
+import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 
 const apiUrl = `${config.apiUrl}`
 
@@ -21,10 +21,10 @@ const toolbarButtonStyles = (isActive: boolean) => ({
 
 const SaveButton: FC<SaveButtonProps> = ({ editor }) => {
     const { focus } = React.useContext<FocusContextType>(FocusContext)
-    const { taskModalState } = React.useContext<TaskModalContextType>(TaskModalContext)
+    const { manualState } = React.useContext<ManualContextType>(ManualContext)
     const updateTaskContent = useMutation(
         async () => {
-            const response = await fetch(`${apiUrl}/task/${focus.process.toString()}/${taskModalState.step}`, {
+            const response = await fetch(`${apiUrl}/task/${focus.process.toString()}/${manualState.step}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -55,8 +55,8 @@ const SaveButton: FC<SaveButtonProps> = ({ editor }) => {
     }
 
     return (
-        <IconButton onClick={handleSave} size='small' sx={toolbarButtonStyles(false)}>
-            <SaveIcon fontSize='small' />
+        <IconButton onClick={handleSave} size='large' sx={toolbarButtonStyles(false)}>
+            <SaveOutlinedIcon fontSize='large' sx={{ color: '#007bff' }} />
         </IconButton>
     )
 }

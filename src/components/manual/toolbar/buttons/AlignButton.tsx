@@ -24,6 +24,7 @@ const AlignButton: FC<AlignButtonProps> = ({ editor }) => {
     const open = Boolean(anchorEl)
 
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+        console.log('opening centerd content anchor')
         setAnchorEl(anchorEl ? null : event.currentTarget);
     }
 

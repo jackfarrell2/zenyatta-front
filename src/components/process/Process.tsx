@@ -8,7 +8,7 @@ import { useQuery } from '@tanstack/react-query';
 import config from '../../config'
 import { FocusContext, FocusContextType } from './ProcessDash';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import TaskModal from '../task/TaskModal';
+import Manual from '../manual/Manual';
 
 const apiUrl = `${config.apiUrl}`
 
@@ -20,31 +20,31 @@ interface ProcessProps {
     initialProcess: number;
 }
 
-export interface TaskModalStateType {
+export interface ManualStateType {
     open: boolean;
     step: number | null
 }
 
-const defaultTaskModalState: TaskModalStateType = {
+const defaultManualState: ManualStateType = {
     open: false,
     step: null,
 }
-export interface TaskModalContextType {
-    taskModalState: TaskModalStateType
-    setTaskModalState: React.Dispatch<React.SetStateAction<TaskModalStateType>>;
+export interface ManualContextType {
+    manualState: ManualStateType
+    setManualState: React.Dispatch<React.SetStateAction<ManualStateType>>;
 }
 
-const defaultTaskModalContext: TaskModalContextType = {
-    taskModalState: defaultTaskModalState,
-    setTaskModalState: () => { }
+const defaultManualContext: ManualContextType = {
+    manualState: defaultManualState,
+    setManualState: () => { }
 }
 
-export const TaskModalContext = React.createContext<TaskModalContextType>(defaultTaskModalContext)
+export const ManualContext = React.createContext<ManualContextType>(defaultManualContext)
 
 const Process: React.FC<ProcessProps> = (props) => {
     const [nodes, setNodes] = React.useState<Node[]>([]);
     const [edges, setEdges] = React.useState<Edge[]>([]);
-    const [taskModalState, setTaskModalState] = React.useState<TaskModalStateType>(defaultTaskModalState)
+    const [manualState, setManualState] = React.useState<ManualStateType>(defaultManualState)
     const { focus, setFocus } = React.useContext<FocusContextType>(FocusContext)
 
     const { isLoading: tasksLoading } = useQuery(
@@ -107,42 +107,47 @@ const Process: React.FC<ProcessProps> = (props) => {
 
 
     return (
-        <>
-            <TaskModalContext.Provider value={{ taskModalState, setTaskModalState }}>
-                <TaskModal open={taskModalState['open']} setTaskModalState={setTaskModalState} />
-                <Box sx={{ height: '100vh', width: '85vw', p: 0, m: 0 }}>
-                    {(tasksLoading || nodes.length === 0) ? (
-                        <Box>
-                            <CircularProgress />
-                        </Box>
-                    ) : (
-                        <div style={{ height: '100%', 'width': '100%' }}>
-                            <ReactFlow
-                                nodes={nodes}
-                                edges={edges}
-                                onNodesChange={onNodesChange}
-                                onEdgesChange={onEdgesChange}
-                                onConnect={onConnect}
-                                nodeTypes={nodeTypes}
-                                fitView
-                                style={rfStyle}
-                                nodesDraggable={false}
-                                zoomOnDoubleClick={false}
-                            >
-                                <Panel position='top-left'>
-                                    <IconButton size='large' disabled={(props.initialProcess === focus.process) ? true : false} onClick={handleBackClick}>
-                                        <ArrowBackIcon />
-                                    </IconButton>
-                                </Panel>
-                                <Background />
-                                <Controls />
-                            </ReactFlow>
-                        </div>
-                    )}
+        <ManualContext.Provider value={{ manualState, setManualState }}>
+            {(manualState.open === true) ? (
+                <Box sx={{ height: '100vh', p: 0, m: 0 }}>
+                    <Manual />
                 </Box>
-            </TaskModalContext.Provider>
-        </>
-    );
+            ) : (
+                <>
+                    <Box sx={{ height: '100vh', p: 0, m: 0 }}>
+                        {(tasksLoading || nodes.length === 0) ? (
+                            <Box>
+                                <CircularProgress />
+                            </Box>
+                        ) : (
+                            <div style={{ height: '100%', 'width': '100%' }}>
+                                <ReactFlow
+                                    nodes={nodes}
+                                    edges={edges}
+                                    onNodesChange={onNodesChange}
+                                    onEdgesChange={onEdgesChange}
+                                    onConnect={onConnect}
+                                    nodeTypes={nodeTypes}
+                                    fitView
+                                    style={rfStyle}
+                                    nodesDraggable={false}
+                                    zoomOnDoubleClick={false}
+                                >
+                                    <Panel position='top-left'>
+                                        <IconButton size='large' disabled={(props.initialProcess === focus.process) ? true : false} onClick={handleBackClick}>
+                                            <ArrowBackIcon />
+                                        </IconButton>
+                                    </Panel>
+                                    <Background />
+                                    <Controls />
+                                </ReactFlow>
+                            </div>
+                        )}
+                    </Box>
+                </>
+            )}
+        </ManualContext.Provider>
+    )
 }
 
 export default Process

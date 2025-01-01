@@ -4,7 +4,6 @@ import Grid from '@mui/material/Grid2'
 import { Box } from '@mui/material'
 import Process from './Process';
 import FileExplorer from './FileExplorer';
-
 export interface APITask {
     id: string;
     stepNumber: number;
@@ -39,13 +38,19 @@ const defaultFocusContext: FocusContextType = {
 export const FocusContext = React.createContext<FocusContextType>(defaultFocusContext)
 
 const ProcessDash: FC = () => {
-    const initialProcess = 1 // Hard coded first process for now
+    const initialProcess = 1
     const fileExplorerProcess = initialProcess
     const [focus, setFocus] = React.useState<FocusState>({ process: initialProcess, step: 0 })
 
     return (
         <FocusContext.Provider value={{ focus, setFocus }}>
-            <Box sx={{ height: '100%', width: '100%' }}>
+            <Box sx={{
+                height: '100%',
+                width: '100%',
+                maxHeight: '100vh', // Ensure height does not exceed the viewport
+                maxWidth: '100vw',  // Ensure width does not exceed the viewport
+                overflow: 'hidden', // Prevent content overflow
+            }}>
                 <Grid container justifyContent='stretch' alignItems='center'>
                     <Grid size={2}>
                         <FileExplorer process={fileExplorerProcess} />

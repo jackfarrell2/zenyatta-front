@@ -4,7 +4,7 @@ import TaskHeader from './TaskHeader';
 import { Stack, Box, Paper } from '@mui/material'
 import { Handle, Position } from '@xyflow/react';
 import { FocusContext, FocusContextType } from '../process/ProcessDash';
-import { TaskModalContext, TaskModalContextType } from '../process/Process';
+import { ManualContext, ManualContextType } from '../process/Process';
 interface TaskNodeProps {
     data: {
         label: string;
@@ -17,10 +17,10 @@ interface TaskNodeProps {
 
 const TaskNode: React.FC<TaskNodeProps> = ({ data, isConnectable }: TaskNodeProps) => {
     const { setFocus } = React.useContext<FocusContextType>(FocusContext)
-    const { setTaskModalState } = React.useContext<TaskModalContextType>(TaskModalContext)
+    const { setManualState } = React.useContext<ManualContextType>(ManualContext)
     const handleDoubleClick = (data: TaskNodeProps['data']) => {
         if (data.isLeaf) {
-            setTaskModalState({ open: true, step: data.stepNumber })
+            setManualState({ open: true, step: data.stepNumber })
         } else {
             setFocus({ process: data.linkedProcessId, step: data.stepNumber })
         }
