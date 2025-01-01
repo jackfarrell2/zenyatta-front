@@ -1,8 +1,8 @@
 .fileExplorer {
-    width: 100%;
+    /* width: 100%; */
     height: 100vh;
-    background: white;
-    border-right: 1px solid #e5e7eb;
+    background: #FAFAFA;
+    border-right: 1px solid black;
     overflow-y: auto;
 }
 

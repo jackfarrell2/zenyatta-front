@@ -88,6 +88,12 @@ const StepEditor: FC<StepEditorProps> = ({ content }) => {
         content: content
     })
 
+    React.useEffect(() => {
+        if (editor && content) {
+            editor.commands.setContent(content);
+        }
+    }, [content, editor]);
+
     // Clean up object URLs when component unmounts
     React.useEffect(() => {
         return () => {

@@ -23,7 +23,7 @@ import FontSizeButton from './buttons/FontSizeButton';
 import SpacingButton from './buttons/SpacingButton';
 import SaveButton from './buttons/SaveButton';
 import CloseIcon from '@mui/icons-material/Close';
-import { ManualContext, ManualContextType } from '../../process/Process';
+import { ManualContext, ManualContextType } from '../../process/ProcessDash';
 
 
 interface StepDocumentToolbarProps {
@@ -40,7 +40,7 @@ const StepDocumentToolbar: FC<StepDocumentToolbarProps> = ({ editor }) => {
     const { setManualState } = React.useContext<ManualContextType>(ManualContext)
 
     const handleClose = () => {
-        setManualState({ open: false, step: null })
+        setManualState({ open: false, process: null, step: null })
     }
 
     return (

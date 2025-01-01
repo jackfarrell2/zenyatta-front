@@ -15,6 +15,31 @@ export interface APITask {
     parentProcessId: number;
 }
 
+export interface ManualStateType {
+    open: boolean;
+    process: number | null;
+    step: number | null;
+}
+
+const defaultManualState: ManualStateType = {
+    open: false,
+    process: null,
+    step: null,
+}
+
+export interface ManualContextType {
+    manualState: ManualStateType
+    setManualState: React.Dispatch<React.SetStateAction<ManualStateType>>;
+}
+
+const defaultManualContext: ManualContextType = {
+    manualState: defaultManualState,
+    setManualState: () => { }
+}
+
+export const ManualContext = React.createContext<ManualContextType>(defaultManualContext)
+
+
 export interface FocusState {
     process: number;
     step: number;
@@ -41,26 +66,30 @@ const ProcessDash: FC = () => {
     const initialProcess = 1
     const fileExplorerProcess = initialProcess
     const [focus, setFocus] = React.useState<FocusState>({ process: initialProcess, step: 0 })
+    const [fileExplorerSize, setFileExplorerSize] = React.useState(2);
+    const [manualState, setManualState] = React.useState<ManualStateType>(defaultManualState)
 
     return (
-        <FocusContext.Provider value={{ focus, setFocus }}>
-            <Box sx={{
-                height: '100%',
-                width: '100%',
-                maxHeight: '100vh', // Ensure height does not exceed the viewport
-                maxWidth: '100vw',  // Ensure width does not exceed the viewport
-                overflow: 'hidden', // Prevent content overflow
-            }}>
-                <Grid container justifyContent='stretch' alignItems='center'>
-                    <Grid size={2}>
-                        <FileExplorer process={fileExplorerProcess} />
+        <ManualContext.Provider value={{ manualState, setManualState }}>
+            <FocusContext.Provider value={{ focus, setFocus }}>
+                <Box sx={{
+                    height: '100%',
+                    width: '100%',
+                    maxHeight: '100vh',
+                    maxWidth: '100vw',
+                    overflow: 'hidden',
+                }}>
+                    <Grid container justifyContent='stretch' alignItems='center'>
+                        <Grid size={fileExplorerSize}>
+                            <FileExplorer process={fileExplorerProcess} fileExplorerSize={fileExplorerSize} setFileExplorerSize={setFileExplorerSize} />
+                        </Grid>
+                        <Grid size={12 - fileExplorerSize}>
+                            <Process initialProcess={initialProcess} />
+                        </Grid>
                     </Grid>
-                    <Grid size={10}>
-                        <Process initialProcess={initialProcess} />
-                    </Grid>
-                </Grid>
-            </Box>
-        </FocusContext.Provider>
+                </Box>
+            </FocusContext.Provider>
+        </ManualContext.Provider>
     )
 }
 

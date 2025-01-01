@@ -9,6 +9,8 @@ import config from '../../config'
 import { FocusContext, FocusContextType } from './ProcessDash';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Manual from '../manual/Manual';
+import { ManualContext, ManualContextType } from '../process/ProcessDash';
+
 
 const apiUrl = `${config.apiUrl}`
 
@@ -20,32 +22,12 @@ interface ProcessProps {
     initialProcess: number;
 }
 
-export interface ManualStateType {
-    open: boolean;
-    step: number | null
-}
-
-const defaultManualState: ManualStateType = {
-    open: false,
-    step: null,
-}
-export interface ManualContextType {
-    manualState: ManualStateType
-    setManualState: React.Dispatch<React.SetStateAction<ManualStateType>>;
-}
-
-const defaultManualContext: ManualContextType = {
-    manualState: defaultManualState,
-    setManualState: () => { }
-}
-
-export const ManualContext = React.createContext<ManualContextType>(defaultManualContext)
-
 const Process: React.FC<ProcessProps> = (props) => {
     const [nodes, setNodes] = React.useState<Node[]>([]);
     const [edges, setEdges] = React.useState<Edge[]>([]);
-    const [manualState, setManualState] = React.useState<ManualStateType>(defaultManualState)
     const { focus, setFocus } = React.useContext<FocusContextType>(FocusContext)
+    const { manualState } = React.useContext<ManualContextType>(ManualContext)
+
 
     const { isLoading: tasksLoading } = useQuery(
         ['processViewTasks', focus.process],
@@ -107,9 +89,9 @@ const Process: React.FC<ProcessProps> = (props) => {
 
 
     return (
-        <ManualContext.Provider value={{ manualState, setManualState }}>
+        <>
             {(manualState.open === true) ? (
-                <Box sx={{ height: '100vh', p: 0, m: 0 }}>
+                <Box sx={{ height: '100vh', p: 0, m: 0, overflow: 'auto' }}>
                     <Manual />
                 </Box>
             ) : (
@@ -146,7 +128,7 @@ const Process: React.FC<ProcessProps> = (props) => {
                     </Box>
                 </>
             )}
-        </ManualContext.Provider>
+        </>
     )
 }
 

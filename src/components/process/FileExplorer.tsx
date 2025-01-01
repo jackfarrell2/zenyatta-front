@@ -6,6 +6,8 @@ import { APITask } from './ProcessDash';
 import { useQuery } from '@tanstack/react-query';
 import config from '../../config';
 import { FocusContext, FocusContextType } from './ProcessDash';
+import { ManualContext, ManualContextType } from '../process/ProcessDash';
+
 
 const apiUrl = `${config.apiUrl}`
 interface FileNode {
@@ -24,6 +26,8 @@ interface FileNodeProps {
 
 interface FileExplorerProps {
     process: number;
+    fileExplorerSize: number;
+    setFileExplorerSize: (size: number) => void;
 }
 
 function createFileNode(task: APITask): FileNode {
@@ -53,6 +57,8 @@ const FileExplorer: React.FC<FileExplorerProps> = (props) => {
     const [tasks, setTasks] = React.useState([])
     const [title, setTitle] = React.useState('')
     const { focus, setFocus } = React.useContext<FocusContextType>(FocusContext)
+    const { manualState, setManualState } = React.useContext<ManualContextType>(ManualContext)
+
     useQuery(
         ['fileExplorerTasks'],
         async () => {
@@ -112,31 +118,40 @@ const FileExplorer: React.FC<FileExplorerProps> = (props) => {
                     onClick={() => {
                         if (node.type === 'folder' && node.id !== 'root-node') {
                             // Folders
-                            if (focus.process === node.parentProcessId) {
-                                // Same process view folder
-                                setFocus({
-                                    ...focus,
-                                    step: node.stepNumber - 1
-                                })
+                            if (manualState.open) {
+                                toggleFolder(currentPath)
                             } else {
-                                // Different process view folder
-                                setFocus({ process: node.parentProcessId, step: node.stepNumber - 1 })
+                                if (focus.process === node.parentProcessId) {
+                                    // Same process view folder
+                                    setFocus({
+                                        ...focus,
+                                        step: node.stepNumber - 1
+                                    })
+                                } else {
+                                    // Different process view folder
+                                    setFocus({ process: node.parentProcessId, step: node.stepNumber - 1 })
+                                }
+                                toggleFolder(currentPath);
                             }
-                            toggleFolder(currentPath);
                         } else if (node.id === 'root-node') {
                             // Root folder
                             toggleFolder(currentPath);
+
                         } else {
                             // Files
-                            if (focus.process === node.parentProcessId) {
-                                // Same process view file
-                                setFocus({
-                                    ...focus,
-                                    step: node.stepNumber - 1
-                                })
+                            if (manualState.open) {
+                                setManualState({ open: true, process: node.parentProcessId, step: node.stepNumber })
                             } else {
-                                // Different process view file
-                                setFocus({ process: node.parentProcessId, step: node.stepNumber - 1 })
+                                if (focus.process === node.parentProcessId) {
+                                    // Same process view file
+                                    setFocus({
+                                        ...focus,
+                                        step: node.stepNumber - 1
+                                    })
+                                } else {
+                                    // Different process view file
+                                    setFocus({ process: node.parentProcessId, step: node.stepNumber - 1 })
+                                }
                             }
                         }
                     }}

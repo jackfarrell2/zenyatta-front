@@ -241,8 +241,8 @@
     width: 100%;
     overflow-x: auto;
     background-color: #F9FBFD;
-    padding-left: 1rem;
-    padding-right: 1rem;
+    padding-left: 0rem;
+    padding-right: 0rem;
 }
 
 /* Second Div */
@@ -255,6 +255,8 @@
     padding-bottom: 1rem;
     margin-left: auto;
     margin-right: auto;
+    padding-left: 0rem;
+    padding-right: 0rem;
 }
 
 /* Combined Print Styles */

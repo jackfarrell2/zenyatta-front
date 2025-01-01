@@ -2,7 +2,7 @@ import React from 'react';
 import { FC } from 'react';
 import { Box, CircularProgress } from '@mui/material';
 import { FocusContext, FocusContextType } from '../process/ProcessDash';
-import { ManualContext, ManualContextType } from '../process/Process';
+import { ManualContext, ManualContextType } from '../process/ProcessDash';
 import config from '../../config';
 import { useQuery } from '@tanstack/react-query';
 import StepEditor from './StepEditor';
@@ -23,7 +23,19 @@ const Manual: FC = () => {
                 return null
             }
             const taskStep = manualState.step
-            const response = await fetch(`${apiUrl}/task/${focus.process.toString()}/${taskStep.toString()}`);
+            const process = manualState.process
+            let url = ''
+            if (!manualState.open) {
+                url = `${apiUrl}/task/${focus.process.toString()}/${taskStep.toString()}`
+            } else {
+                if (process) {
+                    url = `${apiUrl}/task/${process.toString()}/${taskStep.toString()}`
+                } else {
+                    url = `${apiUrl}/task/${focus.process.toString()}/${taskStep.toString()}`
+
+                }
+            }
+            const response = await fetch(url);
             if (!response.ok) {
                 throw new Error('Failed to fetch task content');
             }

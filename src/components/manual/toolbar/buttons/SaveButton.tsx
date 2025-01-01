@@ -4,7 +4,7 @@ import { IconButton } from '@mui/material';
 import { useMutation } from '@tanstack/react-query'
 import config from '../../../../config';
 import { FocusContext, FocusContextType } from '../../../process/ProcessDash';
-import { ManualContext, ManualContextType } from '../../../process/Process';
+import { ManualContext, ManualContextType } from '../../../process/ProcessDash';
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 
 const apiUrl = `${config.apiUrl}`
