@@ -36,7 +36,7 @@ const TaskNode: React.FC<TaskNodeProps> = ({ data, isConnectable }: TaskNodeProp
                         isConnectable={isConnectable}
                     />
                     <Box sx={{ height: '15%' }}>
-                        <TaskHeader />
+                        <TaskHeader data={data} />
                     </Box>
                     <Box sx={{ height: '85%' }}>
                         <TaskBody content={data.label} />

@@ -8,8 +8,32 @@ import ArticleIcon from '@mui/icons-material/Article';
 import EditIcon from '@mui/icons-material/Edit';
 import WarningIcon from '@mui/icons-material/Warning';
 import SavedSearchIcon from '@mui/icons-material/SavedSearch';
+import { ManualContext, ManualContextType } from '../process/ProcessDash';
+import { FocusContext, FocusContextType } from '../process/ProcessDash';
 
-const TaskHeader: React.FC = () => {
+
+interface TaskHeaderProps {
+    data: {
+        label: string;
+        isLeaf: boolean;
+        linkedProcessId: number;
+        stepNumber: number;
+    };
+}
+
+const TaskHeader: React.FC<TaskHeaderProps> = ({ data }) => {
+    const { setManualState } = React.useContext<ManualContextType>(ManualContext)
+    const { focus, setFocus } = React.useContext<FocusContextType>(FocusContext)
+
+
+    const handleOpenClick = () => {
+        if (data.isLeaf) {
+            setManualState({ open: true, process: focus.process, step: data.stepNumber })
+        } else {
+            setFocus({ process: data.linkedProcessId, step: 0 })
+        }
+    }
+
     return (
         <Box sx={{ height: '100%', width: '100%' }}>
             <AppBar position='static'>
@@ -38,7 +62,7 @@ const TaskHeader: React.FC = () => {
                                     <IconButton>
                                         <WarningIcon fontSize='small' />
                                     </IconButton>
-                                    <IconButton>
+                                    <IconButton onClick={handleOpenClick}>
                                         <OpenInFullIcon fontSize='small' />
                                     </IconButton>
                                 </Grid>
