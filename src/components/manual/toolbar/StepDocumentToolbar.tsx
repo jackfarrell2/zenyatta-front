@@ -27,7 +27,7 @@ import { ManualContext, ManualContextType } from '../../process/ProcessDash';
 
 
 interface StepDocumentToolbarProps {
-    editor: Editor | null
+    editor: Editor | null;
 }
 
 const toolbarButtonStyles = (isActive: boolean) => ({

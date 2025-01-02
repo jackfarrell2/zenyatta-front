@@ -50,19 +50,27 @@ const Process: React.FC<ProcessProps> = (props) => {
 
     const { setCenter } = useReactFlow();
 
-    React.useEffect(() => {
+    const nodeFocus = React.useCallback(() => {
         const targetNode = nodes[focus.step];
         if (targetNode) {
-            setCenter(
-                targetNode.position.x + (targetNode.measured?.width ?? 0) / 2,
-                targetNode.position.y + (targetNode.measured?.height ?? 0) / 2 + 115,
-                {
-                    duration: 800,
-                    zoom: 1.2
-                }
-            );
+            setTimeout(() => {
+                setCenter(
+                    targetNode.position.x + (targetNode.measured?.width ?? 0) / 2,
+                    targetNode.position.y + (targetNode.measured?.height ?? 0) / 2 + 115,
+                    {
+                        duration: 800,
+                        zoom: 1.2
+                    }
+                );
+            }, 100);
         }
-    }, [focus.step, setCenter, nodes])
+    }, [focus.step, nodes, setCenter]);
+
+    React.useEffect(() => {
+        if (!manualState.open && nodes.length > 0) {
+            nodeFocus();
+        }
+    }, [focus.step, nodeFocus, manualState.open, nodes]);
 
     const nodeTypes = React.useMemo(() => ({ task: TaskNode }), []);
 
@@ -86,7 +94,6 @@ const Process: React.FC<ProcessProps> = (props) => {
             step: 0
         }));
     };
-
 
     return (
         <>

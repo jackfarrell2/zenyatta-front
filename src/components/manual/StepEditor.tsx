@@ -22,7 +22,7 @@ import { FontSizeExtension } from '../../utils/font-size';
 import { LineHeightExtension } from '../../utils/line-height';
 
 interface StepEditorProps {
-    content: JSON
+    content: JSON;
 }
 
 const StepEditor: FC<StepEditorProps> = ({ content }) => {
