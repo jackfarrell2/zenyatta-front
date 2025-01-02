@@ -23,7 +23,7 @@ const TaskNode: React.FC<TaskNodeProps> = ({ data, isConnectable }: TaskNodeProp
             setManualState({ open: true, process: focus.process, step: data.stepNumber })
             setFocus({ process: focus.process, step: data.stepNumber - 1 })
         } else {
-            setFocus({ process: data.linkedProcessId, step: data.stepNumber })
+            setFocus({ process: data.linkedProcessId, step: 0 })
         }
     }
     return (
