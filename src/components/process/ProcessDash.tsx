@@ -43,11 +43,13 @@ export const ManualContext = React.createContext<ManualContextType>(defaultManua
 export interface FocusState {
     process: number;
     step: number;
+    refocus: number;
 }
 
 const defaultFocusState: FocusState = {
     process: 0,
-    step: 1
+    step: 1,
+    refocus: 0,
 }
 
 export interface FocusContextType {
@@ -65,7 +67,7 @@ export const FocusContext = React.createContext<FocusContextType>(defaultFocusCo
 const ProcessDash: FC = () => {
     const initialProcess = 1
     const fileExplorerProcess = initialProcess
-    const [focus, setFocus] = React.useState<FocusState>({ process: initialProcess, step: 0 })
+    const [focus, setFocus] = React.useState<FocusState>({ process: initialProcess, step: 0, refocus: 0 })
     const [fileExplorerSize, setFileExplorerSize] = React.useState(2);
     const [manualState, setManualState] = React.useState<ManualStateType>(defaultManualState)
 

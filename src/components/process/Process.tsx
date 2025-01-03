@@ -70,7 +70,7 @@ const Process: React.FC<ProcessProps> = (props) => {
         if (!manualState.open && nodes.length > 0) {
             nodeFocus();
         }
-    }, [focus.step, nodeFocus, manualState.open, nodes]);
+    }, [focus.step, nodeFocus, manualState.open, nodes, focus.refocus]);
 
     const nodeTypes = React.useMemo(() => ({ task: TaskNode }), []);
 

@@ -129,7 +129,7 @@ const FileExplorer: React.FC<FileExplorerProps> = (props) => {
                                     })
                                 } else {
                                     // Different process view folder
-                                    setFocus({ process: node.parentProcessId, step: node.stepNumber - 1 })
+                                    setFocus({ ...focus, process: node.parentProcessId, step: node.stepNumber - 1 })
                                 }
                                 toggleFolder(currentPath);
                             }
@@ -146,11 +146,12 @@ const FileExplorer: React.FC<FileExplorerProps> = (props) => {
                                     // Same process view file
                                     setFocus({
                                         ...focus,
-                                        step: node.stepNumber - 1
+                                        step: node.stepNumber - 1,
+                                        refocus: focus.refocus + 1
                                     })
                                 } else {
                                     // Different process view file
-                                    setFocus({ process: node.parentProcessId, step: node.stepNumber - 1 })
+                                    setFocus({ ...focus, process: node.parentProcessId, step: node.stepNumber - 1 })
                                 }
                             }
                         }

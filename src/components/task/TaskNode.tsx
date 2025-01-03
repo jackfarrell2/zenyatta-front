@@ -21,9 +21,9 @@ const TaskNode: React.FC<TaskNodeProps> = ({ data, isConnectable }: TaskNodeProp
     const handleDoubleClick = (data: TaskNodeProps['data']) => {
         if (data.isLeaf) {
             setManualState({ open: true, process: focus.process, step: data.stepNumber })
-            setFocus({ process: focus.process, step: data.stepNumber - 1 })
+            setFocus({ ...focus, process: focus.process, step: data.stepNumber - 1 })
         } else {
-            setFocus({ process: data.linkedProcessId, step: 0 })
+            setFocus({ ...focus, process: data.linkedProcessId, step: 0 })
         }
     }
     return (

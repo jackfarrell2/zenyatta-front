@@ -30,7 +30,7 @@ const TaskHeader: React.FC<TaskHeaderProps> = ({ data }) => {
         if (data.isLeaf) {
             setManualState({ open: true, process: focus.process, step: data.stepNumber })
         } else {
-            setFocus({ process: data.linkedProcessId, step: 0 })
+            setFocus({ ...focus, process: data.linkedProcessId, step: 0 })
         }
     }
 
