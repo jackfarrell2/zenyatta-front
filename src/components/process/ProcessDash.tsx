@@ -4,6 +4,7 @@ import Grid from '@mui/material/Grid2'
 import { Box } from '@mui/material'
 import Process from './Process';
 import FileExplorer from './FileExplorer';
+import ProcessHeader from './ProcessHeader';
 export interface APITask {
     id: string;
     stepNumber: number;
@@ -69,6 +70,7 @@ const ProcessDash: FC = () => {
     const fileExplorerProcess = initialProcess
     const [focus, setFocus] = React.useState<FocusState>({ process: initialProcess, step: 0, refocus: 0 })
     const [fileExplorerSize, setFileExplorerSize] = React.useState(2);
+    const [title, setTitle] = React.useState('')
     const [manualState, setManualState] = React.useState<ManualStateType>(defaultManualState)
 
     return (
@@ -81,9 +83,10 @@ const ProcessDash: FC = () => {
                     maxWidth: '100vw',
                     overflow: 'hidden',
                 }}>
+                    <ProcessHeader title={title} />
                     <Grid container justifyContent='stretch' alignItems='center'>
                         <Grid size={fileExplorerSize}>
-                            <FileExplorer process={fileExplorerProcess} fileExplorerSize={fileExplorerSize} setFileExplorerSize={setFileExplorerSize} />
+                            <FileExplorer process={fileExplorerProcess} fileExplorerSize={fileExplorerSize} setFileExplorerSize={setFileExplorerSize} title={title} setTitle={setTitle} />
                         </Grid>
                         <Grid size={12 - fileExplorerSize}>
                             <Process initialProcess={initialProcess} />

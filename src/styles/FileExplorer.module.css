@@ -7,7 +7,8 @@
 }
 
 .container {
-    padding: 8px;
+    padding: 1.1vh;
+    padding-top: 2.2vh;
 }
 
 .fileNode {

@@ -28,6 +28,8 @@ interface FileExplorerProps {
     process: number;
     fileExplorerSize: number;
     setFileExplorerSize: (size: number) => void;
+    title: string;
+    setTitle: (title: string) => void;
 }
 
 function createFileNode(task: APITask): FileNode {
@@ -55,7 +57,6 @@ function createFileNode(task: APITask): FileNode {
 
 const FileExplorer: React.FC<FileExplorerProps> = (props) => {
     const [tasks, setTasks] = React.useState([])
-    const [title, setTitle] = React.useState('')
     const { focus, setFocus } = React.useContext<FocusContextType>(FocusContext)
     const { manualState, setManualState } = React.useContext<ManualContextType>(ManualContext)
 
@@ -72,7 +73,7 @@ const FileExplorer: React.FC<FileExplorerProps> = (props) => {
         {
             onSuccess: (res) => {
                 setTasks(res.data.tasks);
-                setTitle(res.data.title)
+                props.setTitle(res.data.title)
             },
         }
     );
@@ -81,21 +82,21 @@ const FileExplorer: React.FC<FileExplorerProps> = (props) => {
         createFileNode(task)
     );
     React.useEffect(() => {
-        if (title) {
-            setExpandedFolders(new Set([`/${title}`]));
+        if (props.title) {
+            setExpandedFolders(new Set([`/${props.title}`]));
         }
-    }, [title]);
+    }, [props.title]);
 
     const rootNode: FileNode = {
         id: 'root-node',
-        name: title,
+        name: props.title,
         type: 'folder',
         children: initialFiles,
         parentProcessId: -1,
         stepNumber: -1
     }
 
-    const [expandedFolders, setExpandedFolders] = useState<Set<string>>(new Set([`/${title}`]));
+    const [expandedFolders, setExpandedFolders] = useState<Set<string>>(new Set([`/${props.title}`]));
 
     const toggleFolder = (path: string): void => {
         const newExpanded = new Set(expandedFolders);

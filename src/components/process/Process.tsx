@@ -95,6 +95,9 @@ const Process: React.FC<ProcessProps> = (props) => {
         }));
     };
 
+    const proOptions = { hideAttribution: true };
+
+
     return (
         <>
             {(manualState.open === true) ? (
@@ -121,6 +124,7 @@ const Process: React.FC<ProcessProps> = (props) => {
                                     style={rfStyle}
                                     nodesDraggable={false}
                                     zoomOnDoubleClick={false}
+                                    proOptions={proOptions}
                                 >
                                     <Panel position='top-left'>
                                         <IconButton size='large' disabled={(props.initialProcess === focus.process) ? true : false} onClick={handleBackClick}>
